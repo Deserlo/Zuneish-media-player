@@ -20,6 +20,9 @@
         async function pause() {
           await eel.pause_song();
         }
+        async function unpause() {
+          await eel.unpause_song();
+        }
         </script>
     </head>
     
@@ -27,6 +30,7 @@
       <button onclick="play()">PLay</button>
       <button onclick="stop()">STop</button> 
       <button onclick="pause()">PAuse</button> 
+      <button onclick="unpause()">REsume</button>
       <img src="image.jpg" width="400" height="400">
     </body>
 </html>
