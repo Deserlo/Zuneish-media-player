@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Zune-ish Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
+    <style></style>
+    <style>
+        a.nav-item.nav-link[_ngcontent-hnk-c1] {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: x-large;
+            color: rgba(0, 0, 0, 0.1);
+            padding: 0 0.5rem;
+        }
+        a.navbar-brand[_ngcontent-hnk-c1] {
+            color: #ff1493;
+            font-size: x-large;
+        }
+        nav[_ngcontent-hnk-c1] {
+            background-color: #fff;
+        }
+        a.nav-item.nav-link.active[_ngcontent-hnk-c1] {
+            color: rgba(0, 0, 0, 0.9);
+        }
+    </style>
+    <style>
+        @media only screen and (min-width: 1200px) {
+            .container[_ngcontent-hnk-c3] {
+                max-width: 1400px;
+            }
+        }
+        .flexRight[_ngcontent-hnk-c3] {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .flexCenter[_ngcontent-hnk-c3] {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            input[type="range"][_ngcontent-hnk-c3] {
+                overflow: hidden;
+                width: 20vw;
+                -webkit-appearance: none;
+                background-color: #ececec;
+                border: 1px solid #fff;
+                height: 5px;
+            }
+            input[type="range"][_ngcontent-hnk-c3]:focus {
+                outline: 0;
+            }
+            input[type="range"][_ngcontent-hnk-c3]::-webkit-slider-runnable-track {
+                height: 5px;
+                -webkit-appearance: none;
+                color: #000;
+                margin-top: -1px;
+            }
+            input[type="range"][_ngcontent-hnk-c3]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 3px;
+                height: 15px;
+                border: 1px solid #000;
+                background: #000;
+                color: #000;
+                box-shadow: -20vw 0 0 20vw #000;
+            }
+        }
+        input[type="range"][_ngcontent-hnk-c3]::-moz-range-progress {
+            background-color: #000;
+        }
+        input[type="range"][_ngcontent-hnk-c3]::-moz-range-track {
+            width: 300px;
+            height: 5px;
+            background: #ddd;
+            border: none;
+            border-radius: 3px;
+        }
+        input[type="range"][_ngcontent-hnk-c3]::-moz-range-thumb {
+            width: 3px;
+            height: 15px;
+            border: 1px solid #000;
+            background: #000;
+            color: #000;
+            box-shadow: -20vw 0 0 20vw #000;
+        }
+        input[type="range"][_ngcontent-hnk-c3]:-moz-focusring {
+            outline: #fff solid 1px;
+            outline-offset: -1px;
+        }
+        input[type="range"][_ngcontent-hnk-c3]::-ms-fill-lower {
+            background-color: #43e5f7;
+        }
+        input[type="range"][_ngcontent-hnk-c3]::-ms-fill-upper {
+            background-color: #9a905d;
+        }
+        canvas[_ngcontent-hnk-c3] {
+            width: 50vw;
+            height: 8vh;
+            z-index: 80 !important;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+        }
+        .mediaControls[_ngcontent-hnk-c3] {
+            z-index: 1000 !important;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+        }
+        #albumArt[_ngcontent-hnk-c3] {
+            z-index: 1000 !important;
+            border: 0.5px solid #fff;
+            box-shadow: 0 0 5px #000;
+            transition: all 0.1s;
+            -webkit-transition: 0.1s;
+        }
+        #volume[_ngcontent-hnk-c3] {
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .modal-dialog[_ngcontent-hnk-c4] {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .modal-content[_ngcontent-hnk-c4] {
+            height: 100vh;
+            width: 100vw;
+            min-height: 100%;
+            border: 0;
+            border-radius: 0;
+        }
+    </style>
+    <style>
+        .navbar[_ngcontent-hnk-c6] {
+            padding: 0 0.5rem;
+        }
+        a.nav-item.nav-link[_ngcontent-hnk-c6] {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: medium;
+            color: rgba(0, 0, 0, 0.1);
+            padding: 0 0.6rem;
+            font-weight: 500;
+        }
+        .navbar-nav[_ngcontent-hnk-c6] {
+            padding-right: 2rem;
+        }
+        nav[_ngcontent-hnk-c6] {
+            background-color: #fff;
+        }
+        a.nav-item.nav-link.active[_ngcontent-hnk-c6] {
+            color: rgba(0, 0, 0, 0.9);
+        }
+        .slide-right[_ngcontent-hnk-c6] {
+            -webkit-animation: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both slide-right;
+            animation: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both slide-right;
+        }
+        @-webkit-keyframes slide-right {
+            0% {
+                transform: translateX(-1em);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        @keyframes slide-right {
+            0% {
+                transform: translateX(-1em);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+    <style>
+        .albumArtRow[_ngcontent-hnk-c7] {
+            margin: 0 !important;
+        }
+        .albumArtDiv[_ngcontent-hnk-c7] {
+            float: left;
+            position: relative;
+            width: 20%;
+            padding-bottom: 30%;
+            margin: 1.66%;
+            background-color: #fff;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+        .content[_ngcontent-hnk-c7] {
+            position: absolute;
+            justify-content: center;
+            height: 90%;
+            width: 90%;
+            padding: 5%;
+        }
+        .albumArtImage[_ngcontent-hnk-c7] {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .albumArtImage[_ngcontent-hnk-c7]::after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
+        .albumArtDescription[_ngcontent-hnk-c7] {
+            display: flex;
+            flex-direction: column;
+            color: #000;
+            font-size: 0.8rem;
+        }
+        .content[_ngcontent-hnk-c7] .rs[_ngcontent-hnk-c7] {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+            -o-object-position: center;
+            object-position: center;
+        }
+        .bg[_ngcontent-hnk-c7] {
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #fff;
+        }
+        .selectedAlbum[_ngcontent-hnk-c7] {
+            border: 4px solid #fff;
+            box-shadow: 0 0 10px #000;
+            transition: all 0.1s;
+            -webkit-transition: 0.1s;
+        }
+        .lifont[_ngcontent-hnk-c7] {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .noselect[_ngcontent-hnk-c7] {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .bordered-col[_ngcontent-hnk-c7] {
+            border-right: 1.5px solid #d3d3d3;
+            height: 67vh;
+        }
+        .slide-right[_ngcontent-hnk-c7] {
+            -webkit-animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both slide-right;
+            animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both slide-right;
+        }
+        ul[_ngcontent-hnk-c7] {
+            padding: 0;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+        .listTitle[_ngcontent-hnk-c7] {
+            padding: 0 1rem;
+            font-size: 0.6rem;
+            font-weight: bolder;
+        }
+        li[_ngcontent-hnk-c7] {
+            padding: 0.1rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        li[_ngcontent-hnk-c7]:hover {
+            cursor: default;
+            background-color: #d8d8d9;
+        }
+        li.active[_ngcontent-hnk-c7] {
+            background-color: #d8d8d9;
+            color: #ef21a7;
+        }
+        [_ngcontent-hnk-c7]::-webkit-scrollbar {
+            width: 10px;
+        }
+        [_ngcontent-hnk-c7]::-webkit-scrollbar-track {
+            background: padding-box content-box #c2c2c2;
+            border: 5px solid transparent;
+        }
+        [_ngcontent-hnk-c7]::-webkit-scrollbar-thumb {
+            background: #b3b3b3;
+        }
+        [_ngcontent-hnk-c7]::-webkit-scrollbar-thumb:hover {
+            background: gray;
+        }
+        @-webkit-keyframes slide-right {
+            0% {
+                transform: translateX(-3em);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        @keyframes slide-right {
+            0% {
+                transform: translateX(-3em);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        @media only screen and (min-width: 1200px) {
+            .container[_ngcontent-hnk-c7] {
+                max-width: 1500px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <app-root _nghost-hnk-c0="" ng-version="7.2.15">
+        <app-header _ngcontent-hnk-c0="" _nghost-hnk-c1="">
+            <nav _ngcontent-hnk-c1="" class="navbar navbar-expand-lg">
+                <a _ngcontent-hnk-c1="" class="navbar-brand" href="#" style="opacity: 0.7; padding-left: 2rem;">ZunePlayer</a>
+                <button _ngcontent-hnk-c1="" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button">
+                    <span _ngcontent-hnk-c1="" class="navbar-toggler-icon"></span>
+                </button>
+                <div _ngcontent-hnk-c1="" class="collapse navbar-collapse" id="navbarNavAltMarkup" style="opacity: 0;">
+                    <div _ngcontent-hnk-c1="" class="navbar-nav">
+                        <!---->
+                        <a _ngcontent-hnk-c1="" class="nav-item nav-link active" routerlinkactive="active" href="#/music"> music </a>
+                    </div>
+                </div>
+            </nav>
+        </app-header>
+        <app-body _ngcontent-hnk-c0="" _nghost-hnk-c2="">
+            <router-outlet _ngcontent-hnk-c2=""></router-outlet>
+            <app-music _nghost-hnk-c5="">
+                <app-musicheader _ngcontent-hnk-c5="" _nghost-hnk-c6="">
+                    <nav _ngcontent-hnk-c6="" class="navbar navbar-expand-lg">
+                        <button _ngcontent-hnk-c6="" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button">
+                            <span _ngcontent-hnk-c6="" class="navbar-toggler-icon"></span>
+                        </button>
+                        <div _ngcontent-hnk-c6="" class="collapse navbar-collapse" id="navbarNavAltMarkup" style="display: flex; justify-content: flex-end;">
+                            <div _ngcontent-hnk-c6="" class="navbar-nav">
+                                <!---->
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item0 active" routerlinkactive="active" href="#/music/ARTISTS"> ARTISTS </a>
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item1" routerlinkactive="active" href="#/music/GENRES"> GENRES </a>
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item2" routerlinkactive="active" href="#/music/ALBUMS"> ALBUMS </a>
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item3" routerlinkactive="active" href="#/music/SONGS"> SONGS </a>
+                            </div>
+                        </div>
+                    </nav>
+                    <br _ngcontent-hnk-c6="" />
+                    <br _ngcontent-hnk-c6="" />
+                </app-musicheader>
+                <router-outlet _ngcontent-hnk-c5=""></router-outlet>
+                <app-artists _nghost-hnk-c7="">
+                    <div _ngcontent-hnk-c7="" class="container">
+                        <div _ngcontent-hnk-c7="" class="row">
+                            <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p></div>
+                            <div _ngcontent-hnk-c7="" class="col-5 slide-right" style="padding-left: 2rem;">
+                                <p _ngcontent-hnk-c7="" class="listTitle">ALBUMS</p>
+                                <ul _ngcontent-hnk-c7="" class="bordered-col slide-right"></ul>
+                            </div>
+                            <div _ngcontent-hnk-c7="" class="col-5 slide-right">
+                                <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
+                                <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
+                                    <!---->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </app-artists>
+            </app-music>
+        </app-body>
+        <app-footerplayer _ngcontent-hnk-c0="" _nghost-hnk-c3="">
+            <div _ngcontent-hnk-c3="" class="container">
+                <div _ngcontent-hnk-c3="" class="row">
+                    <div _ngcontent-hnk-c3="" class="col-4"></div>
+                    <div _ngcontent-hnk-c3="" class="col-4 flexCenter">
+                        <canvas _ngcontent-hnk-c3=""></canvas>
+                        <div _ngcontent-hnk-c3="" class="container mediaControls flexCenter">
+                            <div _ngcontent-hnk-c3="" class="row">
+                                <div _ngcontent-hnk-c3="" class="col-2">
+                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="assets/icons/blankImage.png" /></a>
+                                </div>
+                                <div _ngcontent-hnk-c3="" class="col-10">
+                                    <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">No Song selected</div>
+                                    <div _ngcontent-hnk-c3="" class="row"><input _ngcontent-hnk-c3="" id="seek" type="range" value="0" max="NaN" class="ng-untouched ng-pristine ng-valid" /></div>
+                                    <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">0:0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div _ngcontent-hnk-c3="" class="col-4 flexRight">
+                        <div _ngcontent-hnk-c3="" class="row flexRight">
+                            <div _ngcontent-hnk-c3="" class="col-6 flexCenter">
+                                <div _ngcontent-hnk-c3="" style="font-size: 0.8rem;">Vol&nbsp;</div>
+                                <input _ngcontent-hnk-c3="" class="slider" id="myRange" max="100" min="1" style="width: 80%;" type="range" value="50" />
+                            </div>
+                            <div _ngcontent-hnk-c3="" class="col-6">
+                                <div _ngcontent-hnk-c3="" class="row flexRight">
+                                    <a _ngcontent-hnk-c3="" class="rew" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" src="assets/icons/rew.png" style="width: 1.4rem; height: 1.4rem;" /></a>
+                                    <a _ngcontent-hnk-c3="" class="play" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" style="width: 2rem; height: 2rem;" src="assets/icons/play.png" /></a>
+                                    <a _ngcontent-hnk-c3="" class="ff" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" src="assets/icons/ff.png" style="width: 1.4rem; height: 1.4rem;" /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-footerplayer>
+        <app-nowplaying _ngcontent-hnk-c0="" _nghost-hnk-c4="">
+            <div _ngcontent-hnk-c4="" class="container"><div _ngcontent-hnk-c4="" class="row"></div></div>
+        </app-nowplaying>
+    </app-root>
+    <script type="text/javascript" src="runtime.26209474bfa8dc87a77c.js"></script>
+    <script type="text/javascript" src="polyfills.bebee6a5ef0ece001bc6.js"></script>
+    <script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>
+</body>
+</html>
+

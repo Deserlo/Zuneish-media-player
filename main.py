@@ -47,5 +47,5 @@ def unpause_song():
     print("resuming song..")
     mixer.music.unpause()
 
-eel.start('main.html', size=(800, 600), position=(0,0))
+eel.start('index.html', size=(800, 600), position=(0,0))
 
