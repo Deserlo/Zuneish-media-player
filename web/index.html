@@ -6,7 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
-    <style></style>
+    <script type='text/javascript' src='/eel.js'></script>
+        <script type='text/javascript'>
+        async function play() {
+            //let folder = document.getElementById('input-box').value;
+            //let file_div = document.getElementById('song-name');
+            
+            // Call into Python so we can access the file system
+            //let song_name = await eel.play_song(folder)();
+            //file_div.innerHTML = random_filename;
+            await eel.play_song();
+        }
+        async function stop() {
+          await eel.stop_song();
+        }
+        async function pause() {
+          await eel.pause_song();
+        }
+        async function unpause() {
+          await eel.unpause_song();
+        }
+        </script>
     <style>
         a.nav-item.nav-link[_ngcontent-hnk-c1] {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -405,9 +425,10 @@
                             </div>
                             <div _ngcontent-hnk-c3="" class="col-6">
                                 <div _ngcontent-hnk-c3="" class="row flexRight">
-                                    <a _ngcontent-hnk-c3="" class="rew" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" src="assets/icons/rew.png" style="width: 1.4rem; height: 1.4rem;" /></a>
-                                    <a _ngcontent-hnk-c3="" class="play" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" style="width: 2rem; height: 2rem;" src="assets/icons/play.png" /></a>
-                                    <a _ngcontent-hnk-c3="" class="ff" style="padding: 2px;"><img _ngcontent-hnk-c3="" alt="" src="assets/icons/ff.png" style="width: 1.4rem; height: 1.4rem;" /></a>
+                                    <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" >&#xE100;</a>
+                                    <a _ngcontent-hnk-c3="" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
+                                    <a _ngcontent-hnk-c3="" class="pause" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>
+                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;">&#xE101;</a>
                                 </div>
                             </div>
                         </div>
@@ -421,7 +442,7 @@
     </app-root>
     <script type="text/javascript" src="runtime.26209474bfa8dc87a77c.js"></script>
     <script type="text/javascript" src="polyfills.bebee6a5ef0ece001bc6.js"></script>
-    <script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>
+    <!--<script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>-->
 </body>
 </html>
 
