@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
     <script type='text/javascript' src='/eel.js'></script>
         <script type='text/javascript'>
+        async function show_song() {
+            let file_div = document.getElementById('song-name');
+            let song = await eel.show_song()()
+            console.log(song);
+            file_div.innerHTML = song;
+        }
         async function play() {
             //let folder = document.getElementById('input-box').value;
-            //let file_div = document.getElementById('song-name');
-            
             // Call into Python so we can access the file system
             //let song_name = await eel.play_song(folder)();
-            //file_div.innerHTML = random_filename;
             await eel.play_song();
         }
         async function stop() {
@@ -382,15 +385,29 @@
                 <app-artists _nghost-hnk-c7="">
                     <div _ngcontent-hnk-c7="" class="container">
                         <div _ngcontent-hnk-c7="" class="row">
-                            <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p></div>
+                            <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
+                                <ul _ngcontent-pwe-c7="" class="bordered-col slide-right">
+                                    <!---->
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Enrique Iglesias</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Rihanna</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Kelly Clarkson</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Beyoncé</li>
+                                </ul>
+                            </div>
                             <div _ngcontent-hnk-c7="" class="col-5 slide-right" style="padding-left: 2rem;">
                                 <p _ngcontent-hnk-c7="" class="listTitle">ALBUMS</p>
-                                <ul _ngcontent-hnk-c7="" class="bordered-col slide-right"></ul>
+                                <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
+                                <!---->
+                                </ul>
                             </div>
                             <div _ngcontent-hnk-c7="" class="col-5 slide-right">
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
-                                    <!---->
+                                    <li _ngcontent-pwe-c7="" id="song-name" class="noselect lifont">Behind These Hazel Eyes</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Behind These Hazel Eyes</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Behind These Hazel Eyes</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Behind These Hazel Eyes</li>
+                                    <li _ngcontent-pwe-c7="" class="noselect lifont">Behind These Hazel Eyes</li>
                                 </ul>
                             </div>
                         </div>
@@ -428,7 +445,7 @@
                                     <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" >&#xE100;</a>
                                     <a _ngcontent-hnk-c3="" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
                                     <a _ngcontent-hnk-c3="" class="pause" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>
-                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;">&#xE101;</a>
+                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="show_song(); return false;">&#xE101;</a>
                                 </div>
                             </div>
                         </div>
@@ -443,6 +460,9 @@
     <script type="text/javascript" src="runtime.26209474bfa8dc87a77c.js"></script>
     <script type="text/javascript" src="polyfills.bebee6a5ef0ece001bc6.js"></script>
     <!--<script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>-->
+    <script type="text/javascript">
+    show_song()
+    </script>
 </body>
 </html>
 
