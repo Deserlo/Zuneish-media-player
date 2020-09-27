@@ -1,4 +1,6 @@
-Nostalgic for Zune UI player, I'm creating my own desktop media player app using this awesome 
+# Python-React Music Player (Zune Nostalgia)
+
+Nostalgic for the Microsoft Zune player, I'm creating my own desktop media player app using this awesome 
 front-end https://javapyscript.github.io/zunePlayer/#/music/ARTISTS as inspiration along 
 with Eel, Python, React, and SQL Lite db.
 
