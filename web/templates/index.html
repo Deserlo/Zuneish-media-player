@@ -208,7 +208,7 @@
             padding-bottom: 30%;
             margin: 1.66%;
             background-color: #fff;
-            overflow: hidden;
+            /*overflow: hidden;*/
             display: flex;
             justify-content: center;
         }
@@ -296,7 +296,7 @@
         }
         li[_ngcontent-hnk-c7]:hover {
             cursor: default;
-            background-color: #d8d8d9;
+            background-color: #d8d8d9;;
         }
         li.active[_ngcontent-hnk-c7] {
             background-color: #d8d8d9;
@@ -384,23 +384,40 @@
                             <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
                                     {% for artist in artists %}
-                                    <li _ngcontent-pwe-c7="" class="noselect lifont">{{artist}}</li>
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">{{artist}}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div _ngcontent-hnk-c7="" class="col-5 slide-right" style="padding-left: 2rem;">
+                            <div _ngcontent-pce-c7="" class="col-5 slide-right" style="padding-left: 2rem;">
                                 <p _ngcontent-hnk-c7="" class="listTitle">ALBUMS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
-                                {% for album in albums %}
-                                <li _ngcontent-pwe-c7="" class="noselect lifont" >{{ album }}</li>
-                                {% endfor %}
+                                    <div _ngcontent-hnk-c7="" class="row albumArtRow">
+                                        {% for album in albums %}
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb.jpg"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">{{ album }}</span><span _ngcontent-hnk-c7="">{{ album }}</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        {% endfor %}
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb2.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Dave Matthews Band</span><span _ngcontent-hnk-c7="">Big Whiskey And The GrooGux King</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </ul>
                             </div>
                             <div _ngcontent-hnk-c7="" class="col-5 slide-right">
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" id="ul-data" class="bordered-col slide-right">
                                     {% for track in tracks %}
-                                    <li _ngcontent-pwe-c7=""  onclick='play( "{{ track.name }}" ); return false;' class="noselect lifont" value="{{ track.path }}">{{ track.name }}</li>
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "{{ track.name }}" ); return false;' class="noselect lifont" value="{{ track.path }}">{{ track.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -453,7 +470,7 @@
     </app-root>
     <script type="text/javascript" src="runtime.26209474bfa8dc87a77c.js"></script>
     <script type="text/javascript" src="polyfills.bebee6a5ef0ece001bc6.js"></script>
-    <!--<script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>-->
+    <script type="text/javascript" src="main.5580b3470bc2fd4ad43d.js"></script>
 </body>
 </html>
 

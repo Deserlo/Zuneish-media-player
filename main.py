@@ -1,12 +1,12 @@
 import eel
 from AudioTrack import AudioTrack
 from pathlib import Path
-#from mutagen import File
 from pygame import mixer
 from jinja2 import Environment, FileSystemLoader
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
-#from PIL import Image
+from io import BytesIO
+from PIL import Image
 
 paused = False
 
@@ -40,9 +40,15 @@ def getMutagenTags(path):
 tracks = []
 artists = set()
 albums = set()
+size = 100, 100
 for i in song_paths:
     #getMutagenTags(i)
     tags = ID3(i)
+    #pict = tags.get('APIC:').data
+    #im = Image.open(BytesIO(pict))
+    #im.thumbnail(size)
+    #im.save(i.name + ".thumbnail", "JPEG")
+    #print('Picture size : ' + str(im.size))
     album = tags['TALB'].text[0]
     artist = tags['TPE1'].text[0]
     albums.add(album)
