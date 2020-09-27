@@ -1,5 +1,19 @@
 Nostalgic for Zune UI player, I'm creating my own desktop media player app using this awesome 
-front-end https://javapyscript.github.io/zunePlayer/#/music/ARTISTS  (with some modifications) along 
+front-end https://javapyscript.github.io/zunePlayer/#/music/ARTISTS as inspiration along 
 with Eel, Python, React, and SQL Lite db.
 
+ - [ ] Basic player functionality
+	 - [x] play, pause, resume
+	 - [ ] next, previous song
+	 - [ ] volume controls
+- [x] Use jinja templates to render artists, albums, tracks into UI on load 
+ - [ ] Use React components for rendering changes to UI
+	 - [ ] loading image on song now playing
+	 - [ ] layout switching on tab selection
+ - [ ] Install sqllite db to use for storing filepath references
+ - [ ] Add pre-made music visualizers
+
+### Screen Capture
 ![UI](https://raw.githubusercontent.com/Deserlo/Zuneish-media-player/master/ui-capture-9-27-20.png)
+
+
