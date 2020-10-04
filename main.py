@@ -18,6 +18,10 @@ template = env.get_template('index.html')
 
 
 #Directory to look for mp3 files
+'''
+    top_level_py_files = Path("src").glob("*.py")
+    all_py_files = Path("src").rglob("*.py")
+'''
 data_folder = Path(__file__).parent
 music_dir = data_folder / "music/"
 song_paths = music_dir.rglob("*.mp3")
@@ -42,7 +46,7 @@ artists = set()
 albums = set()
 size = 100, 100
 for i in song_paths:
-    #getMutagenTags(i)
+    getMutagenTags(i)
     tags = ID3(i)
     #pict = tags.get('APIC:').data
     #im = Image.open(BytesIO(pict))
@@ -68,11 +72,6 @@ eel.init('web')
 
 @eel.expose
 def get_song(name):
-    print ("Getting first song from directory...")
-    '''
-    top_level_py_files = Path("src").glob("*.py")
-    all_py_files = Path("src").rglob("*.py")
-    '''
     #dict {key=songName, value=songPath}
     print(name)
     for t in tracks:

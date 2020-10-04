@@ -9,21 +9,24 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(song) {
-            //let folder = document.getElementById('input-box').value;
-            // Call into Python so we can access the file system
-            //let song_name = await eel.play_song(folder)();
-            //var song = String(songPath);
-            //console.log(String.raw(`${song}`));
+            document.getElementById('nowPlaying').innerHTML = song;
+            document.getElementById('albumArt').src = 'icons/' + song + '.THUMBNAIL';
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.play_song(song);
         }
         async function stop() {
           await eel.stop_song();
         }
         async function pause() {
-          await eel.pause_song();
+            document.getElementById('playStatus').setAttribute( "onClick", "unpause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE102;';
+            await eel.pause_song();
         }
         async function unpause() {
-          await eel.unpause_song();
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
+            await eel.unpause_song();
         }
         </script>
     <style>
@@ -435,10 +438,10 @@
                         <div _ngcontent-hnk-c3="" class="container mediaControls flexCenter">
                             <div _ngcontent-hnk-c3="" class="row">
                                 <div _ngcontent-hnk-c3="" class="col-2">
-                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="assets/icons/blankImage.png" /></a>
+                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/blankImage.png" /></a>
                                 </div>
                                 <div _ngcontent-hnk-c3="" class="col-10">
-                                    <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">No Song selected</div>
+                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" style="font-size: 0.8rem;">No Song selected</div>
                                     <div _ngcontent-hnk-c3="" class="row"><input _ngcontent-hnk-c3="" id="seek" type="range" value="0" max="NaN" class="ng-untouched ng-pristine ng-valid" /></div>
                                     <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">0:0</div>
                                 </div>
@@ -454,9 +457,9 @@
                             <div _ngcontent-hnk-c3="" class="col-6">
                                 <div _ngcontent-hnk-c3="" class="row flexRight">
                                     <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" >&#xE100;</a>
-                                    <a _ngcontent-hnk-c3="" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
-                                    <a _ngcontent-hnk-c3="" class="pause" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>
-                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="show_song(); return false;">&#xE101;</a>
+                                    <a _ngcontent-hnk-c3="" id="playStatus" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
+                                    <!--<a _ngcontent-hnk-c3="" class="pause" style=" visibility: hidden; margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>-->
+                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;">&#xE101;</a>
                                 </div>
                             </div>
                         </div>

@@ -9,21 +9,24 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(song) {
-            //let folder = document.getElementById('input-box').value;
-            // Call into Python so we can access the file system
-            //let song_name = await eel.play_song(folder)();
-            //var song = String(songPath);
-            //console.log(String.raw(`${song}`));
+            document.getElementById('nowPlaying').innerHTML = song;
+            document.getElementById('albumArt').src = 'icons/' + song + '.THUMBNAIL';
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.play_song(song);
         }
         async function stop() {
           await eel.stop_song();
         }
         async function pause() {
-          await eel.pause_song();
+            document.getElementById('playStatus').setAttribute( "onClick", "unpause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE102;';
+            await eel.pause_song();
         }
         async function unpause() {
-          await eel.unpause_song();
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
+            await eel.unpause_song();
         }
         </script>
     <style>
@@ -384,9 +387,13 @@
                             <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
                                     
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Rumspringa</li>
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Double-F The King</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">Dave Matthews Band</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Rumspringa</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">V-prodRecords</li>
                                     
                                 </ul>
                             </div>
@@ -408,7 +415,25 @@
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="thumb.jpg"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">mixtape V-prodRecords</span><span _ngcontent-hnk-c7="">mixtape V-prodRecords</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb.jpg"></div>
                                                 <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Rumspringa</span><span _ngcontent-hnk-c7="">Rumspringa</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb.jpg"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Trees</span><span _ngcontent-hnk-c7="">Trees</span>
                                             </div>
                                         </div>
                                         </div>
@@ -454,6 +479,14 @@
                                     
                                     <li _ngcontent-hnk-c7=""  onclick='play( "13 - You & Me.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Dave Matthews Band\13 - You & Me.mp3">13 - You & Me.mp3</li>
                                     
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "01-1755106-Double-F The King-The Tees.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Double-F The King - Trees - 193150 --- Jamendo - MP3\01-1755106-Double-F The King-The Tees.mp3">01-1755106-Double-F The King-The Tees.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "02-1755108-Double-F The King-Oh My World.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Double-F The King - Trees - 193150 --- Jamendo - MP3\02-1755108-Double-F The King-Oh My World.mp3">02-1755108-Double-F The King-Oh My World.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "03-1755109-Double-F The King-Why.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Double-F The King - Trees - 193150 --- Jamendo - MP3\03-1755109-Double-F The King-Why.mp3">03-1755109-Double-F The King-Why.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "04-1755110-Double-F The King-Change.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Double-F The King - Trees - 193150 --- Jamendo - MP3\04-1755110-Double-F The King-Change.mp3">04-1755110-Double-F The King-Change.mp3</li>
+                                    
                                     <li _ngcontent-hnk-c7=""  onclick='play( "01 - Shak'em Loose Tonight.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Rumspringa\01 - Shak'em Loose Tonight.mp3">01 - Shak'em Loose Tonight.mp3</li>
                                     
                                     <li _ngcontent-hnk-c7=""  onclick='play( "02 - I Run Amiss.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Rumspringa\02 - I Run Amiss.mp3">02 - I Run Amiss.mp3</li>
@@ -465,6 +498,18 @@
                                     <li _ngcontent-hnk-c7=""  onclick='play( "05 - Skulls 'n Phones.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Rumspringa\05 - Skulls 'n Phones.mp3">05 - Skulls 'n Phones.mp3</li>
                                     
                                     <li _ngcontent-hnk-c7=""  onclick='play( "06 - Minds Awake.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\Rumspringa\06 - Minds Awake.mp3">06 - Minds Awake.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "01-1694616-V-prodRecords-V-prodRecords_Cisar wangou_.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\01-1694616-V-prodRecords-V-prodRecords_Cisar wangou_.mp3">01-1694616-V-prodRecords-V-prodRecords_Cisar wangou_.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "02-1694691-V-prodRecords-tikaf je te le dirais.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\02-1694691-V-prodRecords-tikaf je te le dirais.mp3">02-1694691-V-prodRecords-tikaf je te le dirais.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "03-1694694-V-prodRecords-tikaf.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\03-1694694-V-prodRecords-tikaf.mp3">03-1694694-V-prodRecords-tikaf.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "04-1694699-V-prodRecords-Zr la zone.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\04-1694699-V-prodRecords-Zr la zone.mp3">04-1694699-V-prodRecords-Zr la zone.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "05-1694702-V-prodRecords-moublack pauze.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\05-1694702-V-prodRecords-moublack pauze.mp3">05-1694702-V-prodRecords-moublack pauze.mp3</li>
+                                    
+                                    <li _ngcontent-hnk-c7=""  onclick='play( "06-1694705-V-prodRecords-moublack travaille en solo.mp3" ); return false;' class="noselect lifont" value="c:\Users\18054\MyProjects\zune-ish\music\V-prodRecords - mixtape V-prodRecords - 188427 --- Jamendo - MP3\06-1694705-V-prodRecords-moublack travaille en solo.mp3">06-1694705-V-prodRecords-moublack travaille en solo.mp3</li>
                                     
                                 </ul>
                             </div>
@@ -482,10 +527,10 @@
                         <div _ngcontent-hnk-c3="" class="container mediaControls flexCenter">
                             <div _ngcontent-hnk-c3="" class="row">
                                 <div _ngcontent-hnk-c3="" class="col-2">
-                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="assets/icons/blankImage.png" /></a>
+                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/blankImage.png" /></a>
                                 </div>
                                 <div _ngcontent-hnk-c3="" class="col-10">
-                                    <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">No Song selected</div>
+                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" style="font-size: 0.8rem;">No Song selected</div>
                                     <div _ngcontent-hnk-c3="" class="row"><input _ngcontent-hnk-c3="" id="seek" type="range" value="0" max="NaN" class="ng-untouched ng-pristine ng-valid" /></div>
                                     <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">0:0</div>
                                 </div>
@@ -501,9 +546,9 @@
                             <div _ngcontent-hnk-c3="" class="col-6">
                                 <div _ngcontent-hnk-c3="" class="row flexRight">
                                     <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" >&#xE100;</a>
-                                    <a _ngcontent-hnk-c3="" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
-                                    <a _ngcontent-hnk-c3="" class="pause" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>
-                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="show_song(); return false;">&#xE101;</a>
+                                    <a _ngcontent-hnk-c3="" id="playStatus" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
+                                    <!--<a _ngcontent-hnk-c3="" class="pause" style=" visibility: hidden; margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>-->
+                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;">&#xE101;</a>
                                 </div>
                             </div>
                         </div>
