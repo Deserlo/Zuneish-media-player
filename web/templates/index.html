@@ -10,7 +10,9 @@
     <script type='text/javascript'>
         async function play(song) {
             document.getElementById('nowPlaying').innerHTML = song;
-            document.getElementById('albumArt').src = 'icons/' + song + '.THUMBNAIL';
+            let album =  await eel.get_album(song)();
+            console.log(album);
+            document.getElementById('albumArt').src = 'icons/albums/' + album + '.THUMBNAIL';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.play_song(song);
@@ -399,20 +401,12 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb.jpg"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">{{ album }}</span><span _ngcontent-hnk-c7="">{{ album }}</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/{{ album.img }}"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">{{ album.name }}</span><span _ngcontent-hnk-c7="">{{ album.name }}</span>
                                             </div>
                                         </div>
                                         </div>
                                         {% endfor %}
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="thumb2.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Dave Matthews Band</span><span _ngcontent-hnk-c7="">Big Whiskey And The GrooGux King</span>
-                                            </div>
-                                        </div>
-                                        </div>
                                     </div>
                                 </ul>
                             </div>
