@@ -53,8 +53,8 @@ def getMutagenTags(path):
 
 
 #Storing album, artist and track info to lists and sets
-# (move to sqlite db)
 
+# use below code to get album art
 '''
 tracks = []
 artists = set()
@@ -78,21 +78,14 @@ for i in song_paths:
         tracks.append(track)
     except:
         pass
-
-
-#Jinja template rendering
-output = template.render(tracks=tracks, albums=albums, artists=artists)
-rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
-with open(rendered_filename, "w") as f:
-    f.write(output)
 '''
 
 tracks = []
 artists = set()
 albums = set()
 
-album1 = Album(name="wattts", img="watts.thumbnail")
-album2 = Album(name="watts", img="wattss.thumbnail")
+album1 = Album(name="pic1", img="pic1.thumbnail")
+album2 = Album(name="pic2", img="pic2.thumbnail")
 albums.add(album1)
 albums.add(album2)
 artists.add("keith")
