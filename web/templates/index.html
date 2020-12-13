@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
-        async function play(song) {
-            document.getElementById('nowPlaying').innerHTML = song;
-            let album =  await eel.get_album(song)();
-            console.log(album);
-            document.getElementById('albumArt').src = 'icons/albums/' + album + '.THUMBNAIL';
+        async function play(path) {
+            document.getElementById('nowPlaying').innerHTML = path;
+            console.log(path);
+            //let album =  await eel.get_album(song)();
+            //console.log(album);
+            //document.getElementById('albumArt').src = 'icons/albums/' + album + '.THUMBNAIL';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
-            await eel.play_song(song);
+            await eel.play_song(path);
         }
         async function stop() {
           await eel.stop_song();
@@ -414,7 +415,7 @@
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" id="ul-data" class="bordered-col slide-right">
                                     {% for track in tracks %}
-                                    <li _ngcontent-hnk-c7=""  onclick='play( "{{ track.name }}" ); return false;' class="noselect lifont" value="{{ track.path }}">{{ track.name }}</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('{{track.path}}')" class="noselect lifont" value="{{ track.path }}">{{ track.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>

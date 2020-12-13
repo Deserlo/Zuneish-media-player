@@ -98,12 +98,15 @@ albums.add(album2)
 artists.add("keith")
 artists.add("watts")
 
-query = ("""SELECT * FROM tests order by name asc limit 800;""")
+query = ("""SELECT * FROM tests order by name asc limit 80;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
-    print (row)
-    track = AudioTrack(name=row[1], album="album_title", file_path=row[1])
+    print(row)
+    id = row[0]
+    name = row[1].rsplit("\\", 1)[1]
+    file_path = row[1].replace("\\", "\\\\")
+    track = AudioTrack(name=name, album="album_title", file_path=file_path)
     tracks.append(track)
 
 c.close()
@@ -118,16 +121,6 @@ with open(rendered_filename, "w") as f:
 
 
 eel.init('web')
-
-@eel.expose
-def get_song(name):
-    #dict {key=songName, value=songPath}
-    print(name)
-    for t in tracks:
-        if t.name == name:
-            filepath = t.path
-    print (filepath)
-    return str(filepath)
 
 @eel.expose
 def get_album(name):
@@ -149,15 +142,15 @@ def play_song(songName):
         mixer.init() 
         
         # Loading the song 
-        song = get_song(songName)
-        print("Loading..", song)
-        mixer.music.load(song)
+        print("Loading..", songName)
+        mixer.music.load(songName)
         
         # Setting the volume 
         mixer.music.set_volume(0.7) 
         
         # Start playing the song 
         mixer.music.play() 
+
 
 @eel.expose
 def stop_song():
