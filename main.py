@@ -86,7 +86,7 @@ artists.add("watts")
 
 
 #SQLite query, results parsing
-query = ("""SELECT * FROM tests order by name asc limit 80;""")
+query = ("""SELECT * FROM tests order by name asc limit 10;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
