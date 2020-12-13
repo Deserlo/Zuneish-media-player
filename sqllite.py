@@ -2,18 +2,11 @@ import sqlite3
 from sqlite3 import Error
 from pathlib import Path
 
+#Loading files
 conn = sqlite3.connect('MusicLibrary.db')
-
-#Directory to look for mp3 files
-'''
-    top_level_py_files = Path("src").glob("*.py")
-    all_py_files = Path("src").rglob("*.py")
-'''
 data_folder = Path(__file__).parent
 home = Path.home()
 music_dir = home / "music/"
-print ("music dir:", music_dir)
-#music_dir = data_folder / "music/"
 song_paths = music_dir.rglob("*.mp3")
 
 try:

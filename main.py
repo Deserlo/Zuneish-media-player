@@ -23,22 +23,14 @@ env = Environment(loader=file_loader)
 template = env.get_template('index.html')
 
 
-
-#Directory to look for mp3 files
-'''
-    top_level_py_files = Path("src").glob("*.py")
-    all_py_files = Path("src").rglob("*.py")
-'''
-data_folder = Path(__file__).parent
 home = Path.home()
 music_dir = home / "music/"
 print ("music dir:", music_dir)
-#music_dir = data_folder / "music/"
 song_paths = music_dir.rglob("*.mp3")
 
 
-
-#Mp3 Metadata
+#Mp3 Metadata 
+#Needs work
 def getMutagenTags(path):
     """"""
     audio = ID3(path)
@@ -53,8 +45,8 @@ def getMutagenTags(path):
 
 
 #Storing album, artist and track info to lists and sets
-
 # use below code to get album art
+# Needs work
 '''
 tracks = []
 artists = set()
@@ -84,6 +76,7 @@ tracks = []
 artists = set()
 albums = set()
 
+#Proving it renders
 album1 = Album(name="pic1", img="pic1.thumbnail")
 album2 = Album(name="pic2", img="pic2.thumbnail")
 albums.add(album1)
@@ -91,6 +84,8 @@ albums.add(album2)
 artists.add("keith")
 artists.add("watts")
 
+
+#SQLite query, results parsing
 query = ("""SELECT * FROM tests order by name asc limit 80;""")
 c.execute(query)
 queryResults = c.fetchall()
@@ -108,22 +103,13 @@ c.close()
 
 
 output = template.render(tracks=tracks, albums=albums, artists=artists)
+data_folder = Path(__file__).parent
 rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
 with open(rendered_filename, "w") as f:
     f.write(output)
 
 
 eel.init('web')
-
-@eel.expose
-def get_album(name):
-    print(name)
-    for t in tracks:
-        if t.name == name:
-            album = t.album
-        print (album)
-        return album
-
 
 
 @eel.expose
