@@ -17,22 +17,27 @@ song_paths = music_dir.rglob("*.mp3")
 #Mp3 Metadata 
 #Needs work
 def getMutagenTags(path):
-    """"""
     audio = ID3(path)
     #print(audio.pprint())
-    '''
-    print ("Artist: %s" % audio['TPE1'].text[0])
-    print ("Album: %s" % audio['TALB'].text[0])
-    print ("Track: %s" % audio["TIT2"].text[0])
-    print ("Release Year: %s" % audio["TDRC"].text[0])
-    '''
+    try:
+        print ("Artist: %s" % audio['TPE1'].text[0])
+        print ("Album: %s" % audio['TALB'].text[0])
+        print ("Track: %s" % audio["TIT2"].text[0])
+        print ("Release Year: %s" % audio["TDRC"].text[0])
+    except:
+        print("error")
+
+
+
+for i in song_paths:
+    getMutagenTags(i)
 
 
 # use below code to get album art
-# Work in progress
+'''
 size = 100, 100
 for i in song_paths:
-    #getMutagenTags(i)
+    getMutagenTags(i)
     tags = ID3(i)
     try: 
         pict = tags.get('APIC:').data
@@ -65,7 +70,7 @@ albums.add(album1)
 albums.add(album2)
 artists.add("keith")
 artists.add("watts")
-'''
+
 
     
     
