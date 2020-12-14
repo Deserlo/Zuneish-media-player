@@ -56,7 +56,6 @@ c.close()
 
 
 artists.add("temp")
-artists.add("temp")
 
 output = template.render(tracks=tracks, albums=albums, artists=artists)
 data_folder = Path(__file__).parent
@@ -67,7 +66,16 @@ with open(rendered_filename, "w") as f:
 
 eel.init('web')
 
+#Metadata retrieval from music library
+@eel.expose
+def get_album(song):
+    return "Aerosmith"
 
+
+
+
+
+#Music Player functionalities
 @eel.expose
 def play_song(song):
     # Starting the mixer 

@@ -10,10 +10,8 @@
     <script type='text/javascript'>
         async function play(path) {
             document.getElementById('nowPlaying').innerHTML = path;
-            console.log(path);
-            //let album =  await eel.get_album(song)();
-            //console.log(album);
-            //document.getElementById('albumArt').src = 'icons/albums/' + album + '.THUMBNAIL';
+            let album =  await eel.get_album(path)();
+            document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.play_song(path);
