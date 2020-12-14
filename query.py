@@ -17,8 +17,7 @@ try:
     #row = c.execute("INSERT INTO artists VALUES ('mos def')").lastrowid
 
     #c.execute("insert into albums values(?,'black album')"), row )
-    count = 1
-    query = ("""SELECT * FROM tests order by name asc limit 10;""")
+    query = ("""SELECT * FROM tests order by name asc limit 2;""")
     c.execute(query)
     queryResults = c.fetchall()
     for row in queryResults:
