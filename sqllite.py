@@ -6,6 +6,7 @@ from mutagen.mp3 import MP3
 from io import BytesIO
 from PIL import Image
 
+
 #Loading files
 conn = sqlite3.connect('MusicLibrary.db')
 data_folder = Path(__file__).parent
@@ -14,8 +15,8 @@ music_dir = home / "music/"
 song_paths = music_dir.rglob("*.mp3")
 
 
+
 #Mp3 Metadata 
-#Needs work
 def getMutagenTags(path):
     audio = ID3(path)
     #print(audio.pprint())
@@ -28,48 +29,52 @@ def getMutagenTags(path):
         print("error")
 
 
+def saveAlbumThumb(tags, path, img_format):
+    size = 100, 100
+    pict = tags.get('APIC:').data
+    im = Image.open(BytesIO(pict))
+    im.thumbnail(size)
+    im.save(path, img_format)
 
-for i in song_paths:
-    getMutagenTags(i)
+
+def getAlbumArtPath(tags):
+    album_title = tags['TALB'].text[0]
+    album_art_folder = data_folder / "web/templates/icons/albums/"
+    album_art_path = str(album_art_folder) + '\' + album_title + ".thumbnail"
+    return album_art_path
 
 
-# use below code to get album art
-'''
-size = 100, 100
-for i in song_paths:
-    getMutagenTags(i)
-    tags = ID3(i)
-    try: 
-        pict = tags.get('APIC:').data
-        im = Image.open(BytesIO(pict))
-        im.thumbnail(size)
-        album_title = tags['TALB'].text[0]
-        #artist = tags['TPE1'].text[0]
-        album_art_folder = data_folder / "web/templates/icons/albums/"
-        album_art_path = str(album_art_folder) + '/' + album_title + ".thumbnail"
-        im.save(album_art_path, "JPEG" )
-        try: 
-            c = conn.cursor()
-            print(album_art_path)
-            c.execute("""INSERT INTO albums (name, album_art_path) VALUES (?,?);""", [album_title, album_art_path])
-            conn.commit()
-        except Error as e:
-            print(e)      
+def loadAlbum(song_path):
+    stmt = ' """INSERT INTO albums (name, album_art_path) VALUES (?,?);""", [album_title, album_art_path]'
+    tags = ID3(song_path)
+    try:
+        album_art_path = getAlbumArtPath(tags)
+        saveAlbumThumb(tags, album_art_path, "JPEG")
+        executeQueryStmt(stmt)
     except:
         pass
 
-'''
-tracks = []
-artists = set()
-albums = set()
 
-#Proving it renders
-album1 = Album(name="pic1", img="pic1.thumbnail")
-album2 = Album(name="pic2", img="pic2.thumbnail")
-albums.add(album1)
-albums.add(album2)
-artists.add("keith")
-artists.add("watts")
+def getArtist(tags):
+    artist = tags['TPE1'].text[0]
+    return artist
+
+
+def getTrack(tags):
+    track = tags["TIT2"].text[0]
+    return track
+
+
+def executeQueryStmt(stmt):
+    try:
+        c = conn.cursor()
+        c.execute(stmt)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+
+
 
 
     

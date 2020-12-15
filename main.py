@@ -66,11 +66,12 @@ with open(rendered_filename, "w") as f:
 
 eel.init('web')
 
+
+
 #Metadata retrieval from music library
 @eel.expose
 def get_album(song):
     return "Aerosmith"
-
 
 
 
