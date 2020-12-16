@@ -41,6 +41,7 @@ for row in queryResults:
     track = AudioTrack(name=name, album="album_title", file_path=file_path)
     tracks.append(track)
 
+
 query1 = ("""select distinct name, album_art_path from albums;""")
 c.execute(query1)
 queryResults = c.fetchall()
@@ -52,10 +53,19 @@ for row in queryResults:
     albums.add(album)
 
 
+query2 = ("""select distinct name from artists;""")
+c.execute(query2)
+queryResults = c.fetchall()
+for row in queryResults:
+    print(row)
+    artist = row[0]
+    artists.add(artist)
+    
 c.close()
 
 
-artists.add("temp")
+
+
 
 output = template.render(tracks=tracks, albums=albums, artists=artists)
 data_folder = Path(__file__).parent
