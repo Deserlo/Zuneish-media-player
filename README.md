@@ -10,8 +10,8 @@ with Eel, Python, React, and SQL Lite db.
 	 - [ ] volume controls
 - Use jinja templates to render
 	- [x] tracks
-	- [ ] albums
-	- [ ] artists
+	- [x] albums
+	- [x] artists
  - [ ] Use React components for rendering changes to UI?
 	 - [ ] loading image on song now playing
 	 - [ ] layout switching on tab selection
@@ -19,6 +19,6 @@ with Eel, Python, React, and SQL Lite db.
  - [ ] Add pre-made music visualizers
 
 ### Screen Capture
-![UI](https://raw.githubusercontent.com/Deserlo/Zuneish-media-player/master/ui-capture-9-27-20.png)
+![UI](https://raw.githubusercontent.com/Deserlo/Zuneish-media-player/master/screenshot-12-15-20.png)
 
 
