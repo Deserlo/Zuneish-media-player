@@ -46,43 +46,28 @@ def getAlbumArtPath(tags):
     return album_art_path
 
 
-'''
-def loadAlbum(song_path):
-    stmt = ' """INSERT INTO albums (name, album_art_path) VALUES (?,?);""", [album_title, album_art_path]'
-    tags = ID3(song_path)
+def loadTrack(path, track, album, artist):
     try:
-        album_art_path = getAlbumArtPath(tags)
-        saveAlbumThumb(tags, album_art_path, "JPEG")
-        executeQueryStmt(stmt)
-    except:
-        pass
-'''
-
-def loadArtists(distinctArtists):
-    for a in distinctArtists:
-        try:
-            print(a)
-            c = conn.cursor()
-            c.execute("""INSERT INTO artists (name) VALUES (?);""", [a])
-            conn.commit()
-        except Error as e:
-            print(e)
-
-def getTrack(tags):
-    track = tags["TIT2"].text[0]
-    return track
+        c = conn.cursor()
+        c.execute("""INSERT INTO tracks (path, track_name, album, artist) VALUES(?,?,?,?);""", [path, track, album, artist])
+        conn.commit()
+    except Error as e:
+        print(e)
 
 
 for i in song_paths:
     tags = ID3(i)
     try:
+        track = tags['TIT2'].text[0]
         artist = tags['TPE1'].text[0]
-        artists.add(artist)
+        album = tags['TALB'].text[0]
+        album_art_path = getAlbumArtPath(tags)
+        saveAlbumThumb(tags, album_art_path, "JPEG")
+        loadTrack(str(i),track, album, artist)
     except:
         pass
 
 
-loadArtists(artists)
 
 
 

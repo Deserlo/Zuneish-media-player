@@ -30,43 +30,26 @@ albums = set()
 
 
 #SQLite query, results parsing
-query = ("""SELECT * FROM tests;""")
+query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 20;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
     print(row)      
-    id = row[0]
-    name = row[1].rsplit("\\", 1)[1]
-    file_path = row[1].replace("\\", "\\\\")
-    track = AudioTrack(name=name, album="album_title", file_path=file_path)
+    file_path = row[0].replace("\\", "\\\\")
+    name = row[1]
+    album = row[2]
+    artist = row[3]
+    track = AudioTrack(name=name, album=album, artist=artist, file_path=file_path)
     tracks.append(track)
-
-
-query1 = ("""select distinct name, album_art_path from albums;""")
-c.execute(query1)
-queryResults = c.fetchall()
-for row in queryResults:
-    print(row)
-    album_title = row[0]
-    album_art_path = row[1].replace("\\", "\\\\")
-    album = Album(name=album_title, img=album_title + ".thumbnail")
+    #Need to make album set unique based on name
+    album = Album(name=album, img=album+".thumbnail")
     albums.add(album)
-
-
-query2 = ("""select distinct name from artists;""")
-c.execute(query2)
-queryResults = c.fetchall()
-for row in queryResults:
-    print(row)
-    artist = row[0]
     artists.add(artist)
+
     
 c.close()
 
-
-
-
-
+#error with encodings, need to resolve
 output = template.render(tracks=tracks, albums=albums, artists=artists)
 data_folder = Path(__file__).parent
 rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
