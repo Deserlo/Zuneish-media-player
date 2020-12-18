@@ -6,6 +6,7 @@ from pygame import mixer
 from jinja2 import Environment, FileSystemLoader
 import sqlite3
 from sqlite3 import Error
+import collections
 
 
 conn = sqlite3.connect('MusicLibrary.db')
@@ -30,7 +31,7 @@ albums = set()
 
 
 #SQLite query, results parsing
-query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 200;""")
+query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 500;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
@@ -41,9 +42,8 @@ for row in queryResults:
     artist = row[3]
     track = AudioTrack(name=name, album=album, artist=artist, file_path=file_path)
     tracks.append(track)
-    #Need to make album set unique based on name
     ustr = ".thumbnail"
-    album = Album(name=album, img=album + ustr)
+    album = Album(name=album, artist=artist, img=album + ustr)
     albums.add(album)
     artists.add(artist)
 
