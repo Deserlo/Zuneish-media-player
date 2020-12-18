@@ -30,11 +30,11 @@ albums = set()
 
 
 #SQLite query, results parsing
-query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 20;""")
+query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 200;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
-    print(row)      
+    print(row)     
     file_path = row[0].replace("\\", "\\\\")
     name = row[1]
     album = row[2]
@@ -42,18 +42,18 @@ for row in queryResults:
     track = AudioTrack(name=name, album=album, artist=artist, file_path=file_path)
     tracks.append(track)
     #Need to make album set unique based on name
-    album = Album(name=album, img=album+".thumbnail")
+    ustr = ".thumbnail"
+    album = Album(name=album, img=album + ustr)
     albums.add(album)
     artists.add(artist)
 
     
 c.close()
 
-#error with encodings, need to resolve
 output = template.render(tracks=tracks, albums=albums, artists=artists)
 data_folder = Path(__file__).parent
 rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
-with open(rendered_filename, "w") as f:
+with open(rendered_filename, "w", encoding='utf-8') as f:
     f.write(output)
 
 
