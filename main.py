@@ -64,8 +64,18 @@ eel.init('web')
 #Metadata retrieval from music library
 @eel.expose
 def get_album(song):
-    return "Aerosmith"
-
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor() 
+    query = ("""SELECT album from tracks
+    where path = ?""")
+    c.execute(query, (song,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)
+        album = row[0]
+    c.close()
+    return album
+    
 
 
 

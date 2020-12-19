@@ -9,8 +9,9 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(path) {
-            document.getElementById('nowPlaying').innerHTML = path;
+            let songName = await eel.get_song(path)();
             let album =  await eel.get_album(path)();
+            document.getElementById('nowPlaying').innerHTML = path;
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
