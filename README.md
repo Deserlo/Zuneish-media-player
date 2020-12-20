@@ -6,7 +6,7 @@ with Eel, Python, React, and SQL Lite db.
 
  - [ ] Basic player functionality
 	 - [x] play, pause, resume
-	 - [ ] next, previous song
+	 - [x] next, previous song
 	 - [ ] volume controls
 - Use jinja templates to render
 	- [x] tracks
