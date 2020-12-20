@@ -71,7 +71,6 @@ def get_song(id):
     c.execute(query,(id,))
     queryResults = c.fetchall()
     for row in queryResults:
-        print("Query result:", row)
         song = row[0]
         album = row[1]
         path = row[2]
@@ -81,20 +80,33 @@ def get_song(id):
 
 
 @eel.expose
-def get_next_song(song_id):
+def get_next_song(id):
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor()
     query = ("""select path, id from tracks where id = (select min(id) from tracks where id > ?)""")
-    c.execute(query, (song_id,))
+    c.execute(query, (id,))
     queryResults = c.fetchall()
     for row in queryResults:
-        print("Query result:", row)
+        print(row)
         next_track = row[0]
         next_id = row[1]
     c.close()
     return [next_track, next_id]
 
 
+@eel.expose
+def get_previous_song(id):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor()
+    query =("""select path, id from tracks where id = (select max(id) from tracks where id < ?)""")
+    c.execute(query, (id,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)
+        previous_track = row[0]
+        previous_id = row[1]
+    c.close()
+    return [previous_track, previous_id]
 
 
 
