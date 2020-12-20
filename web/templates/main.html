@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
-        async function play(path) {
-            let songName = await eel.get_song(path)();
-            let album =  await eel.get_album(path)();
+        async function play(id) {
+            let path = await eel.get_song_path(id)();
+            let songName = await eel.get_song(id)();
+            let album =  await eel.get_album(id)();
             document.getElementById('nowPlaying').innerHTML = songName;
-            document.getElementById('nowPlaying').setAttribute('value', songName);
+            document.getElementById('nowPlaying').setAttribute('value', id);
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
+            console.log(path);
             await eel.play_song(path);
         }
         async function stop() {
@@ -32,14 +34,20 @@
             await eel.unpause_song();
         }
         async function next(){
-            let songName = document.getElementById('nowPlaying').getAttribute('value');
-            console.log(songName);
-            /*let songName = await eel.get_song(path)();*/
-            let nextPath = await eel.get_next_song(songName)();
+            let curr_id = document.getElementById('nowPlaying').getAttribute('value');
+            console.log(curr_id);
+            let next = await eel.get_next_song(curr_id)();
+            let nextPath = next[0];
+            let next_id = next[1];
+            console.log(next[0]);
+            console.log(next[1]);
+            play(next_id);
+            /*
             await eel.play_song(nextPath);
             document.getElementById('nowPlaying').innerHTML = nextPath;
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
+            */
         }
         </script>
     <style>
@@ -400,19 +408,19 @@
                             <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
                                     
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC</li>
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">311</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">AC/DC</li>
                                     
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">A Perfect Circle</li>
-                                    
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC/AC-DC</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">A Perfect Circle</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">Adele</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">Airbourne</li>
                                     
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">311</li>
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">Aerosmith</li>
                                     
@@ -422,6 +430,24 @@
                                 <p _ngcontent-hnk-c7="" class="listTitle">ALBUMS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
                                     <div _ngcontent-hnk-c7="" class="row albumArtRow">
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Toys in the Attic.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Toys in the Attic</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Pump.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Pump</span>
+                                            </div>
+                                        </div>
+                                        </div>
                                         
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
@@ -444,80 +470,8 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Powerage.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Powerage</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/19 (Deluxe Edition).thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Adele</span><span _ngcontent-hnk-c7="">19 (Deluxe Edition)</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Pump.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Pump</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Black Ice.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC/AC-DC</span><span _ngcontent-hnk-c7="">Black Ice</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Toys in the Attic.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Toys in the Attic</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Mer De Noms.thumbnail"></div>
                                                 <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">A Perfect Circle</span><span _ngcontent-hnk-c7="">Mer De Noms</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Aerosmith.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Aerosmith</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Universal Pulse.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">311</span><span _ngcontent-hnk-c7="">Universal Pulse</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Dirty Deeds Done Dirt Cheap.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Dirty Deeds Done Dirt Cheap</span>
                                             </div>
                                         </div>
                                         </div>
@@ -534,8 +488,8 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/No Guts. No Glory..thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Airbourne</span><span _ngcontent-hnk-c7="">No Guts. No Glory.</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Powerage.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Powerage</span>
                                             </div>
                                         </div>
                                         </div>
@@ -543,8 +497,26 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Let There Be Rock.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Let There Be Rock</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Universal Pulse.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">311</span><span _ngcontent-hnk-c7="">Universal Pulse</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/19 (Deluxe Edition).thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Adele</span><span _ngcontent-hnk-c7="">19 (Deluxe Edition)</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Ballbreaker.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Ballbreaker</span>
                                             </div>
                                         </div>
                                         </div>
@@ -561,8 +533,44 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Ballbreaker.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Ballbreaker</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Aerosmith.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Aerosmith</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/No Guts. No Glory..thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Airbourne</span><span _ngcontent-hnk-c7="">No Guts. No Glory.</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Dirty Deeds Done Dirt Cheap.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Dirty Deeds Done Dirt Cheap</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Black Ice.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC/AC-DC</span><span _ngcontent-hnk-c7="">Black Ice</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Let There Be Rock.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Let There Be Rock</span>
                                             </div>
                                         </div>
                                         </div>
@@ -574,105 +582,105 @@
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" id="ul-data" class="bordered-col slide-right">
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\01 Time Bomb.mp3')" class="noselect lifont" value="1">Time Bomb</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('1')" class="noselect lifont" value="1">Time Bomb</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\02 Wild Nights.mp3')" class="noselect lifont" value="2">Wild Nights</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('2')" class="noselect lifont" value="2">Wild Nights</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\03 Sunset in July.mp3')" class="noselect lifont" value="3">Sunset in July</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('3')" class="noselect lifont" value="3">Sunset in July</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\04 Trouble.mp3')" class="noselect lifont" value="4">Trouble</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('4')" class="noselect lifont" value="4">Trouble</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\05 Count Me In.mp3')" class="noselect lifont" value="5">Count Me In</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('5')" class="noselect lifont" value="5">Count Me In</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\06 Rock On.mp3')" class="noselect lifont" value="6">Rock On</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('6')" class="noselect lifont" value="6">Rock On</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\07 Weightless.mp3')" class="noselect lifont" value="7">Weightless</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('7')" class="noselect lifont" value="7">Weightless</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\311\\Universal Pulse\\08 And a Ways to Go.mp3')" class="noselect lifont" value="8">And a Ways to Go</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('8')" class="noselect lifont" value="8">And a Ways to Go</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\01 The Hollow.mp3')" class="noselect lifont" value="9">The Hollow</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('9')" class="noselect lifont" value="9">The Hollow</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\02 Magdalena.mp3')" class="noselect lifont" value="10">Magdalena</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('10')" class="noselect lifont" value="10">Magdalena</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\03 Rose.mp3')" class="noselect lifont" value="11">Rose</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('11')" class="noselect lifont" value="11">Rose</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\04 Judith.mp3')" class="noselect lifont" value="12">Judith</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('12')" class="noselect lifont" value="12">Judith</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\05 Orestes.mp3')" class="noselect lifont" value="13">Orestes</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('13')" class="noselect lifont" value="13">Orestes</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\06 3 Libras.mp3')" class="noselect lifont" value="14">3 Libras</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('14')" class="noselect lifont" value="14">3 Libras</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\07 Sleeping Beauty.mp3')" class="noselect lifont" value="15">Sleeping Beauty</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('15')" class="noselect lifont" value="15">Sleeping Beauty</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\08 Thomas.mp3')" class="noselect lifont" value="16">Thomas</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('16')" class="noselect lifont" value="16">Thomas</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\09 Renholdër.mp3')" class="noselect lifont" value="17">Renholdër</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('17')" class="noselect lifont" value="17">Renholdër</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\10 Thinking of You.mp3')" class="noselect lifont" value="18">Thinking of You</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('18')" class="noselect lifont" value="18">Thinking of You</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\A Perfect Circle\\Mer De Noms\\11 Breña.mp3')" class="noselect lifont" value="19">Breña</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('19')" class="noselect lifont" value="19">Breña</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Back in Black\\07 You Shook Me All Night Long.mp3')" class="noselect lifont" value="20">You Shook Me All Night Long</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('20')" class="noselect lifont" value="20">You Shook Me All Night Long</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Ballbreaker\\10 Whiskey On The Rocks.mp3')" class="noselect lifont" value="21">Whiskey On The Rocks</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('21')" class="noselect lifont" value="21">Whiskey On The Rocks</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Black Ice\\10 Rocking All The Way.mp3')" class="noselect lifont" value="22">Rocking All The Way</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('22')" class="noselect lifont" value="22">Rocking All The Way</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Black Ice\\12 Money Made.mp3')" class="noselect lifont" value="23">Money Made</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('23')" class="noselect lifont" value="23">Money Made</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Dirty Deeds Done Dirt Cheap\\03 Big Balls.mp3')" class="noselect lifont" value="24">Big Balls</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('24')" class="noselect lifont" value="24">Big Balls</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Highway to Hell\\04 Touch Too Much.mp3')" class="noselect lifont" value="25">Touch Too Much</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('25')" class="noselect lifont" value="25">Touch Too Much</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Highway to Hell\\05 Beating Around the Bush.mp3')" class="noselect lifont" value="26">Beating Around the Bush</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('26')" class="noselect lifont" value="26">Beating Around the Bush</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Highway to Hell\\08 If You Want Blood (You've Got It).mp3')" class="noselect lifont" value="27">If You Want Blood (You've Got It)</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('27')" class="noselect lifont" value="27">If You Want Blood (You've Got It)</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Let There Be Rock\\01 Go Down.mp3')" class="noselect lifont" value="28">Go Down</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('28')" class="noselect lifont" value="28">Go Down</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\01 Rock 'N' Roll Damnation.mp3')" class="noselect lifont" value="29">Rock 'N' Roll Damnation</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('29')" class="noselect lifont" value="29">Rock 'N' Roll Damnation</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\03 Gimme A Bullet.mp3')" class="noselect lifont" value="30">Gimme A Bullet</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('30')" class="noselect lifont" value="30">Gimme A Bullet</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\04 Riff Raff.mp3')" class="noselect lifont" value="31">Riff Raff</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('31')" class="noselect lifont" value="31">Riff Raff</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\05 Sin City.mp3')" class="noselect lifont" value="32">Sin City</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('32')" class="noselect lifont" value="32">Sin City</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\06 What's Next To The Moon.mp3')" class="noselect lifont" value="33">What's Next To The Moon</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('33')" class="noselect lifont" value="33">What's Next To The Moon</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\07 Gone Shootin'.mp3')" class="noselect lifont" value="34">Gone Shootin'</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('34')" class="noselect lifont" value="34">Gone Shootin'</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\08 Up To My Neck In You.mp3')" class="noselect lifont" value="35">Up To My Neck In You</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('35')" class="noselect lifont" value="35">Up To My Neck In You</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\Powerage\\09 Kicked In The Teeth.mp3')" class="noselect lifont" value="36">Kicked In The Teeth</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('36')" class="noselect lifont" value="36">Kicked In The Teeth</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\AC-DC\\[1990] The Razor's Edge\\01 Thunderstruck.mp3')" class="noselect lifont" value="37">Thunderstruck</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('37')" class="noselect lifont" value="37">Thunderstruck</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Adele\\19 (Deluxe Edition)\\09 Make You Feel My Love.mp3')" class="noselect lifont" value="38">Make You Feel My Love</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('38')" class="noselect lifont" value="38">Make You Feel My Love</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Aerosmith\\01 Make It.mp3')" class="noselect lifont" value="39">Make It</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('39')" class="noselect lifont" value="39">Make It</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Aerosmith\\03 Dream On.mp3')" class="noselect lifont" value="40">Dream On</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('40')" class="noselect lifont" value="40">Dream On</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Aerosmith\\04 One Way Street.mp3')" class="noselect lifont" value="41">One Way Street</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('41')" class="noselect lifont" value="41">One Way Street</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Aerosmith\\06 Write Me.mp3')" class="noselect lifont" value="42">Write Me</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('42')" class="noselect lifont" value="42">Write Me</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Aerosmith\\07 Movin' Out.mp3')" class="noselect lifont" value="43">Movin' Out</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('43')" class="noselect lifont" value="43">Movin' Out</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Pump\\02 F.I.N.E..mp3')" class="noselect lifont" value="44">F.I.N.E.</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('44')" class="noselect lifont" value="44">F.I.N.E.</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Aerosmith\\Toys in the Attic\\08 Round and Round.mp3')" class="noselect lifont" value="45">Round and Round</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('45')" class="noselect lifont" value="45">Round and Round</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Airbourne\\No Guts. No Glory\\01 Born To Kill.mp3')" class="noselect lifont" value="46">Born To Kill</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('46')" class="noselect lifont" value="46">Born To Kill</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Airbourne\\No Guts. No Glory\\02 No Way But The Hard Way.mp3')" class="noselect lifont" value="47">No Way But The Hard Way</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('47')" class="noselect lifont" value="47">No Way But The Hard Way</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Airbourne\\No Guts. No Glory\\03 Blonde, Bad And Beautiful.mp3')" class="noselect lifont" value="48">Blonde, Bad And Beautiful</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('48')" class="noselect lifont" value="48">Blonde, Bad And Beautiful</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Airbourne\\No Guts. No Glory\\04 Raise The Flag.mp3')" class="noselect lifont" value="49">Raise The Flag</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('49')" class="noselect lifont" value="49">Raise The Flag</li>
                                     
-                                    <li _ngcontent-hnk-c7=""  onclick="play('C:\\Users\\18054\\music\\Airbourne\\No Guts. No Glory\\05 Bottom Of The Well.mp3')" class="noselect lifont" value="50">Bottom Of The Well</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('50')" class="noselect lifont" value="50">Bottom Of The Well</li>
                                     
                                 </ul>
                             </div>

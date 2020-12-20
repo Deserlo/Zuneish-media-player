@@ -64,12 +64,11 @@ eel.init('web')
 
 #Metadata retrieval from music library
 @eel.expose
-def get_album(song):
+def get_album(id):
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor() 
-    query = ("""SELECT album from tracks
-    where path = ?""")
-    c.execute(query, (song,))
+    query = ("""SELECT album from tracks where id = ?""")
+    c.execute(query, (id,))
     queryResults = c.fetchall()
     for row in queryResults:
         print(row)
@@ -78,36 +77,46 @@ def get_album(song):
     return album
 
 @eel.expose
-def get_next_song(songName):
+def get_next_song(song_id):
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor()
-    print("getting next song..")
-    print(songName)
-    query = ("""SELECT track_name, path from tracks
-    where track_name > ? order by track_name limit 1""")
-    #AND track_name < (SELECT name FROM tracks where track_name = ? order by track_name desc limit 1)
-    c.execute(query, (songName,))
+    query = ("""select path, id from tracks where id = (select min(id) from tracks where id > ?)""")
+    c.execute(query, (song_id,))
     queryResults = c.fetchall()
     for row in queryResults:
         print("Query result:", row)
-        next_track = row[1]
+        next_track = row[0]
+        next_id = row[1]
     c.close()
-    return next_track
+    return [next_track, next_id]
     
 @eel.expose
-def get_song(path):
+def get_song(id):
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor()
-    print("getting song name from path..")
-    print(path)
-    query = ("""SELECT track_name from tracks where path=?""")
-    c.execute(query,(path,))
+    query = ("""SELECT track_name from tracks where id=?""")
+    c.execute(query,(id,))
     queryResults = c.fetchall()
     for row in queryResults:
         print("Query result:", row)
         song = row[0]
     c.close()
     return song
+
+@eel.expose
+def get_song_path(id):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor()
+    query = ("""SELECT path from tracks where id=?""")
+    print("id:", id)
+    c.execute(query,(id,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print("Query result:", row)
+        path = row[0].replace("\\", "\\\\")
+        print("path: ",path)
+    c.close()
+    return path
 
 
 #Music Player functionalities

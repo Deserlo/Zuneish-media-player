@@ -8,14 +8,17 @@
     <link rel="stylesheet" href="css/styles.f50846decd5d31e19c66.css" />
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
-        async function play(path) {
-            let songName = await eel.get_song(path)();
-            let album =  await eel.get_album(path)();
+        async function play(id) {
+            //clean this up
+            let path = await eel.get_song_path(id)();
+            let songName = await eel.get_song(id)();
+            let album =  await eel.get_album(id)();
             document.getElementById('nowPlaying').innerHTML = songName;
-            document.getElementById('nowPlaying').setAttribute('value', songName);
+            document.getElementById('nowPlaying').setAttribute('value', id);
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
+            console.log(path);
             await eel.play_song(path);
         }
         async function stop() {
@@ -32,14 +35,20 @@
             await eel.unpause_song();
         }
         async function next(){
-            let songName = document.getElementById('nowPlaying').getAttribute('value');
-            console.log(songName);
-            /*let songName = await eel.get_song(path)();*/
-            let nextPath = await eel.get_next_song(songName)();
+            let curr_id = document.getElementById('nowPlaying').getAttribute('value');
+            console.log(curr_id);
+            let next = await eel.get_next_song(curr_id)();
+            let nextPath = next[0];
+            let next_id = next[1];
+            console.log(next[0]);
+            console.log(next[1]);
+            play(next_id);
+            /*
             await eel.play_song(nextPath);
             document.getElementById('nowPlaying').innerHTML = nextPath;
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
+            */
         }
         </script>
     <style>
@@ -425,7 +434,7 @@
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" id="ul-data" class="bordered-col slide-right">
                                     {% for track in tracks %}
-                                    <li _ngcontent-hnk-c7=""  onclick="play('{{track.path}}')" class="noselect lifont" value="{{ track.id }}">{{ track.name }}</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('{{track.id}}')" class="noselect lifont" value="{{ track.id }}">{{ track.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
