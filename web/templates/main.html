@@ -9,15 +9,15 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(id) {
-            let path = await eel.get_song_path(id)();
-            let songName = await eel.get_song(id)();
-            let album =  await eel.get_album(id)();
+            let song = await eel.get_song(id)();
+            let songName = song[0];
+            let album = song[1];
+            let path = song[2];
             document.getElementById('nowPlaying').innerHTML = songName;
             document.getElementById('nowPlaying').setAttribute('value', id);
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
-            console.log(path);
             await eel.play_song(path);
         }
         async function stop() {
@@ -408,21 +408,21 @@
                             <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
                                 <ul _ngcontent-hnk-c7="" class="bordered-col slide-right">
                                     
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">311</li>
-                                    
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">AC/DC</li>
-                                    
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC/AC-DC</li>
-                                    
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">A Perfect Circle</li>
-                                    
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Adele</li>
-                                    
-                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Airbourne</li>
                                     
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC</li>
                                     
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">311</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">ACDC/AC-DC</li>
+                                    
                                     <li _ngcontent-hnk-c7="" class="noselect lifont">Aerosmith</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Airbourne</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">AC/DC</li>
+                                    
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">Adele</li>
                                     
                                 </ul>
                             </div>
@@ -434,80 +434,8 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Toys in the Attic.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Toys in the Attic</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Pump.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Pump</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Black Ice.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC</span><span _ngcontent-hnk-c7="">Black Ice</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Back in Black.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Back in Black</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Mer De Noms.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">A Perfect Circle</span><span _ngcontent-hnk-c7="">Mer De Noms</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Highway To Hell.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Highway To Hell</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Powerage.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Powerage</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Universal Pulse.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">311</span><span _ngcontent-hnk-c7="">Universal Pulse</span>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
-                                            <div _ngcontent-hnk-c7="" class="content">
-                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/19 (Deluxe Edition).thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Adele</span><span _ngcontent-hnk-c7="">19 (Deluxe Edition)</span>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC/AC-DC</span><span _ngcontent-hnk-c7="">Black Ice</span>
                                             </div>
                                         </div>
                                         </div>
@@ -524,6 +452,33 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Aerosmith.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Aerosmith</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/19 (Deluxe Edition).thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Adele</span><span _ngcontent-hnk-c7="">19 (Deluxe Edition)</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Let There Be Rock.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Let There Be Rock</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/[1990] The Razor's Edge.thumbnail"></div>
                                                 <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">[1990] The Razor's Edge</span>
                                             </div>
@@ -533,8 +488,26 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Aerosmith.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Aerosmith</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Pump.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Pump</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Powerage.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Powerage</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Toys in the Attic.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">Aerosmith</span><span _ngcontent-hnk-c7="">Toys in the Attic</span>
                                             </div>
                                         </div>
                                         </div>
@@ -551,6 +524,15 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Highway To Hell.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Highway To Hell</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Dirty Deeds Done Dirt Cheap.thumbnail"></div>
                                                 <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Dirty Deeds Done Dirt Cheap</span>
                                             </div>
@@ -560,8 +542,8 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Black Ice.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC/AC-DC</span><span _ngcontent-hnk-c7="">Black Ice</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Mer De Noms.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">A Perfect Circle</span><span _ngcontent-hnk-c7="">Mer De Noms</span>
                                             </div>
                                         </div>
                                         </div>
@@ -569,8 +551,26 @@
                                         <div _ngcontent-hnk-c7="" class="albumArtDiv">
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
-                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Let There Be Rock.thumbnail"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Let There Be Rock</span>
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Universal Pulse.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">311</span><span _ngcontent-hnk-c7="">Universal Pulse</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Back in Black.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">AC/DC</span><span _ngcontent-hnk-c7="">Back in Black</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                            <div _ngcontent-hnk-c7="" class="content">
+                                                <div _ngcontent-hnk-c7="" class="albumArtImage">
+                                                    <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/Black Ice.thumbnail"></div>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">ACDC</span><span _ngcontent-hnk-c7="">Black Ice</span>
                                             </div>
                                         </div>
                                         </div>

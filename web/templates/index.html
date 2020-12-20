@@ -9,16 +9,15 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(id) {
-            //clean this up
-            let path = await eel.get_song_path(id)();
-            let songName = await eel.get_song(id)();
-            let album =  await eel.get_album(id)();
+            let song = await eel.get_song(id)();
+            let songName = song[0];
+            let album = song[1];
+            let path = song[2];
             document.getElementById('nowPlaying').innerHTML = songName;
             document.getElementById('nowPlaying').setAttribute('value', id);
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
-            console.log(path);
             await eel.play_song(path);
         }
         async function stop() {
@@ -40,15 +39,7 @@
             let next = await eel.get_next_song(curr_id)();
             let nextPath = next[0];
             let next_id = next[1];
-            console.log(next[0]);
-            console.log(next[1]);
             play(next_id);
-            /*
-            await eel.play_song(nextPath);
-            document.getElementById('nowPlaying').innerHTML = nextPath;
-            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
-            document.getElementById('playStatus').innerHTML = '&#xE103;';
-            */
         }
         </script>
     <style>

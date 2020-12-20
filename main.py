@@ -64,17 +64,21 @@ eel.init('web')
 
 #Metadata retrieval from music library
 @eel.expose
-def get_album(id):
+def get_song(id):
     conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor() 
-    query = ("""SELECT album from tracks where id = ?""")
-    c.execute(query, (id,))
+    c = conn.cursor()
+    query = ("""SELECT track_name, album, path from tracks where id=?""")
+    c.execute(query,(id,))
     queryResults = c.fetchall()
     for row in queryResults:
-        print(row)
-        album = row[0]
+        print("Query result:", row)
+        song = row[0]
+        album = row[1]
+        path = row[2]
     c.close()
-    return album
+    return [song, album, path]
+
+
 
 @eel.expose
 def get_next_song(song_id):
@@ -89,34 +93,9 @@ def get_next_song(song_id):
         next_id = row[1]
     c.close()
     return [next_track, next_id]
-    
-@eel.expose
-def get_song(id):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor()
-    query = ("""SELECT track_name from tracks where id=?""")
-    c.execute(query,(id,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print("Query result:", row)
-        song = row[0]
-    c.close()
-    return song
 
-@eel.expose
-def get_song_path(id):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor()
-    query = ("""SELECT path from tracks where id=?""")
-    print("id:", id)
-    c.execute(query,(id,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print("Query result:", row)
-        path = row[0].replace("\\", "\\\\")
-        print("path: ",path)
-    c.close()
-    return path
+
+
 
 
 #Music Player functionalities
