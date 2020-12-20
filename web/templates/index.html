@@ -11,7 +11,8 @@
         async function play(path) {
             let songName = await eel.get_song(path)();
             let album =  await eel.get_album(path)();
-            document.getElementById('nowPlaying').innerHTML = path;
+            document.getElementById('nowPlaying').innerHTML = songName;
+            document.getElementById('nowPlaying').setAttribute('value', songName);
             document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
@@ -29,6 +30,16 @@
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.unpause_song();
+        }
+        async function next(){
+            let songName = document.getElementById('nowPlaying').getAttribute('value');
+            console.log(songName);
+            /*let songName = await eel.get_song(path)();*/
+            let nextPath = await eel.get_next_song(songName)();
+            await eel.play_song(nextPath);
+            document.getElementById('nowPlaying').innerHTML = nextPath;
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
         }
         </script>
     <style>
@@ -414,7 +425,7 @@
                                 <p _ngcontent-hnk-c7="" class="listTitle">SONGS</p>
                                 <ul _ngcontent-hnk-c7="" id="ul-data" class="bordered-col slide-right">
                                     {% for track in tracks %}
-                                    <li _ngcontent-hnk-c7=""  onclick="play('{{track.path}}')" class="noselect lifont" value="{{ track.path }}">{{ track.name }}</li>
+                                    <li _ngcontent-hnk-c7=""  onclick="play('{{track.path}}')" class="noselect lifont" value="{{ track.id }}">{{ track.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -453,7 +464,7 @@
                                     <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" >&#xE100;</a>
                                     <a _ngcontent-hnk-c3="" id="playStatus" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
                                     <!--<a _ngcontent-hnk-c3="" class="pause" style=" visibility: hidden; margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>-->
-                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;">&#xE101;</a>
+                                    <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="next();return false;">&#xE101;</a>
                                 </div>
                             </div>
                         </div>

@@ -31,16 +31,17 @@ albums = set()
 
 
 #SQLite query, results parsing
-query = ("""SELECT path, track_name, album, artist FROM tracks asc limit 500;""")
+query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 50;""")
 c.execute(query)
 queryResults = c.fetchall()
 for row in queryResults:
     print(row)     
-    file_path = row[0].replace("\\", "\\\\")
-    name = row[1]
+    file_path = row[1].replace("\\", "\\\\")
+    name = row[0]
     album = row[2]
     artist = row[3]
-    track = AudioTrack(name=name, album=album, artist=artist, file_path=file_path)
+    id = row[4]
+    track = AudioTrack(id=id, name=name, album=album, artist=artist, file_path=file_path)
     tracks.append(track)
     ustr = ".thumbnail"
     album = Album(name=album, artist=artist, img=album + ustr)
@@ -75,8 +76,38 @@ def get_album(song):
         album = row[0]
     c.close()
     return album
-    
 
+@eel.expose
+def get_next_song(songName):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor()
+    print("getting next song..")
+    print(songName)
+    query = ("""SELECT track_name, path from tracks
+    where track_name > ? order by track_name limit 1""")
+    #AND track_name < (SELECT name FROM tracks where track_name = ? order by track_name desc limit 1)
+    c.execute(query, (songName,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print("Query result:", row)
+        next_track = row[1]
+    c.close()
+    return next_track
+    
+@eel.expose
+def get_song(path):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor()
+    print("getting song name from path..")
+    print(path)
+    query = ("""SELECT track_name from tracks where path=?""")
+    c.execute(query,(path,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print("Query result:", row)
+        song = row[0]
+    c.close()
+    return song
 
 
 #Music Player functionalities
@@ -115,6 +146,8 @@ def unpause_song():
     paused = False
     print("resuming song..")
     mixer.music.unpause()
+
+
     
 eel.start('templates/main.html', size=(800, 600))
 

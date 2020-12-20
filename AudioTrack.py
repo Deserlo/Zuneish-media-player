@@ -1,5 +1,6 @@
 class AudioTrack(object):
-    def __init__(self, name, album, artist, file_path):
+    def __init__(self, id, name, album, artist, file_path):
+        self.id = id
         self.name = name
         self.album = album
         self.artist = artist
