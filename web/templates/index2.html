@@ -57,19 +57,6 @@
             }
             */
         }
-        async function home(){
-            await eel.reload()();
-            window.location.reload(true);
-        }
-        async function getArtistView(artistName){
-            let albumDiv = document.getElementById('albumList');
-            while (albumDiv.firstChild){
-                albumDiv.removeChild(albumDiv.firstChild);
-            }
-
-            /*await eel.get_artist_view(artistName)();
-            window.location.reload(true);*/
-        }
         </script>
     <style>
         a.nav-item.nav-link[_ngcontent-hnk-c1] {
@@ -412,7 +399,7 @@
                         <div _ngcontent-hnk-c6="" class="collapse navbar-collapse" id="navbarNavAltMarkup" style="display: flex; justify-content: flex-end;">
                             <div _ngcontent-hnk-c6="" class="navbar-nav">
                                 <!---->
-                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item0 active" routerlinkactive="active" onclick="home();" href="#/music/ARTISTS"> ARTISTS </a>
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item0 active" routerlinkactive="active" href="#/music/ARTISTS"> ARTISTS </a>
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item1" routerlinkactive="active"  href="#/music/GENRES"> GENRES </a>
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item2" routerlinkactive="active" href="#/music/ALBUMS"> ALBUMS </a>
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item3" routerlinkactive="active" onclick="remove();" href="#/music/SONGS"> SONGS </a>
@@ -429,7 +416,7 @@
                             <div _ngcontent-hnk-c7="" class="col-2 slide-right"><p _ngcontent-hnk-c7="" class="listTitle">ARTISTS</p>
                                 <ul _ngcontent-hnk-c7="" id="artistList"  class="bordered-col slide-right">
                                     {% for artist in artists %}
-                                    <li _ngcontent-hnk-c7="" value="{{artist}}" onclick="getArtistView('{{artist}}');" class="noselect lifont">{{artist}}</li>
+                                    <li _ngcontent-hnk-c7="" class="noselect lifont">{{artist}}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -472,10 +459,10 @@
                         <div _ngcontent-hnk-c3="" class="container mediaControls flexCenter">
                             <div _ngcontent-hnk-c3="" class="row">
                                 <div _ngcontent-hnk-c3="" class="col-2">
-                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/blankImage.png" /></a>
+                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/albums/Blond.thumbnail" /></a>
                                 </div>
                                 <div _ngcontent-hnk-c3="" class="col-10">
-                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" style="font-size: 0.8rem;">No Song selected</div>
+                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" style="font-size: 0.8rem;">{{ tracks[id].name }}</div>
                                     <div _ngcontent-hnk-c3="" class="row"><input _ngcontent-hnk-c3="" id="seek" type="range" value="0" max="NaN" class="ng-untouched ng-pristine ng-valid" /></div>
                                     <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">0:0</div>
                                 </div>

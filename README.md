@@ -1,6 +1,6 @@
 # Python-React Music Player (Zune Nostalgia)
 
-Nostalgic for the Microsoft Zune player, I'm creating my own desktop media player app using this awesome 
+Nostalgic for the Microsoft Zune player, I'm creating my own desktop media player as an offline web app using this awesome 
 front-end https://javapyscript.github.io/zunePlayer/#/music/ARTISTS as inspiration along 
 with Eel, Python, React, and SQL Lite db.
 
@@ -12,10 +12,12 @@ with Eel, Python, React, and SQL Lite db.
 	- [x] tracks
 	- [x] albums
 	- [x] artists
- - [ ] Use React components for rendering changes to UI?
-	 - [ ] loading image on song now playing
+ - [ ] Use Eel and jinja for rendering changes to UI
+	 - [x] loading image on song now playing
 	 - [ ] layout switching on tab selection
+ - [ ] Keep track of state
  - [x] Install sqllite db to use for storing filepath references
+ - [ ] Ability to load files on user selection of music directories
  - [ ] Add pre-made music visualizers
 
 ### Screen Capture

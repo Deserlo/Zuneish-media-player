@@ -9,56 +9,115 @@ from sqlite3 import Error
 import collections
 
 
-conn = sqlite3.connect('MusicLibrary.db')
-c = conn.cursor() 
-
 paused = False
 
-#Jinja template
+#Jinja
 file_loader = FileSystemLoader('web/templates')
 env = Environment(loader=file_loader)
-template = env.get_template('index.html')
 
 
 home = Path.home()
 music_dir = home / "music/"
 print ("music dir:", music_dir)
-song_paths = music_dir.rglob("*.mp3")
-
-tracks = []
-artists = set()
-albums = set()
+#song_paths = music_dir.rglob("*.mp3")
 
 
-#SQLite query, results parsing
-query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 50;""")
-c.execute(query)
-queryResults = c.fetchall()
-for row in queryResults:
-    print(row)     
-    file_path = row[1].replace("\\", "\\\\")
-    name = row[0]
-    album = row[2]
-    artist = row[3]
-    id = row[4]
-    track = AudioTrack(id=id, name=name, album=album, artist=artist, file_path=file_path)
-    tracks.append(track)
-    ustr = ".thumbnail"
-    album = Album(name=album, artist=artist, img=album + ustr)
-    albums.add(album)
-    artists.add(artist)
+
+def load():
+    tracks = []
+    artists = set()
+    albums = set()
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor() 
+    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 250;""")
+    c.execute(query)
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)     
+        file_path = row[1].replace("\\", "\\\\")
+        name = row[0]
+        album = row[2]
+        artist = row[3]
+        id = row[4]
+        track = AudioTrack(id=id, name=name, album=album, artist=artist, file_path=file_path)
+        tracks.append(track)
+        ustr = ".thumbnail"
+        album = Album(name=album, artist=artist, img=album + ustr)
+        albums.add(album)
+        artists.add(artist)
+    c.close()
+    template = env.get_template('index.html')
+    output = template.render(tracks=tracks, albums=albums, artists=artists)
+    data_folder = Path(__file__).parent
+    rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
+    with open(rendered_filename, "w", encoding='utf-8') as f:
+        f.write(output)
+    
 
     
-c.close()
-
-output = template.render(tracks=tracks, albums=albums, artists=artists)
-data_folder = Path(__file__).parent
-rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
-with open(rendered_filename, "w", encoding='utf-8') as f:
-    f.write(output)
 
 
+load()
 eel.init('web')
+
+
+@eel.expose
+def reload():
+    load()
+
+#for example
+@eel.expose
+def switch(curr_id):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor() 
+    print('switching layout..')
+    tracks = []
+    artists = set()
+    albums = set()
+    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 250;""")
+    c.execute(query)
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)     
+        track = AudioTrack(id=row[4], name=row[0], album=row[2], artist=row[3], file_path=row[1].replace("\\", "\\\\"))
+        tracks.append(track)
+        album = Album(name=row[2], artist=row[3], img=row[2] + ".thumbnail")
+        albums.add(album)
+        artists.add(row[3])
+    c.close()
+    template = env.get_template('index2.html')
+    output = template.render(id=int(curr_id)-1,tracks=tracks, albums=albums, artists=artists)
+    data_folder = Path(__file__).parent
+    rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
+    with open(rendered_filename, "w", encoding='utf-8') as f:
+        f.write(output)
+
+
+@eel.expose
+def get_artist_view(artistName):
+    conn = sqlite3.connect('MusicLibrary.db')
+    c = conn.cursor() 
+    print('getting artist data')
+    tracks = []
+    artists = set()
+    albums = set()
+    query = ("""SELECT track_name, path, album, artist, id FROM tracks where artist=? order by id asc""")
+    c.execute(query, (artistName,))
+    queryResults = c.fetchall()
+    for row in queryResults:
+        print(row)     
+        track = AudioTrack(id=row[4], name=row[0], album=row[2], artist=row[3], file_path=row[1].replace("\\", "\\\\"))
+        tracks.append(track)
+        album = Album(name=row[2], artist=row[3], img=row[2] + ".thumbnail")
+        albums.add(album)
+        artists.add(row[3])
+    c.close()
+    template = env.get_template('index.html')
+    output = template.render(tracks=tracks, albums=albums, artists=artists)
+    data_folder = Path(__file__).parent
+    rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
+    with open(rendered_filename, "w", encoding='utf-8') as f:
+        f.write(output)
 
 
 
@@ -149,5 +208,5 @@ def unpause_song():
 
 
     
-eel.start('templates/main.html', size=(800, 600))
+eel.start('templates/main.html',port=0, size=(800, 600))
 
