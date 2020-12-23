@@ -10,15 +10,12 @@
     <script type='text/javascript'>
         async function play(id) {
             let song = await eel.get_song(id)();
-            let songName = song[0];
-            let album = song[1];
-            let path = song[2];
-            document.getElementById('nowPlaying').innerHTML = songName;
+            document.getElementById('nowPlaying').innerHTML = song[0];
             document.getElementById('nowPlaying').setAttribute('value', id);
-            document.getElementById('albumArt').src = 'icons/albums/' + album + '.thumbnail';
+            document.getElementById('albumArt').src = 'icons/albums/' + song[1] + '.thumbnail';
             document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
             document.getElementById('playStatus').innerHTML = '&#xE103;';
-            await eel.play_song(path);
+            await eel.play_song(song[2]);
         }
         async function stop() {
           await eel.stop_song();
@@ -62,12 +59,19 @@
             window.location.reload(true);
         }
         async function getArtistView(artistName){
-            let albumDiv = document.getElementById('albumList');
+            let albumDivs = document.querySelectorAll('.albumArtDiv');
+            albumDivs.forEach( div => {
+                artist = div.querySelector('.albumArtArtist').innerHTML;
+                if (artistName != artist){
+                   console.log(artist);
+                   artist.remove(); 
+                } 
+            });
+            /*
             while (albumDiv.firstChild){
                 albumDiv.removeChild(albumDiv.firstChild);
             }
-
-            /*await eel.get_artist_view(artistName)();
+            await eel.get_artist_view(artistName)();
             window.location.reload(true);*/
         }
         </script>
@@ -442,7 +446,7 @@
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/{{ album.img }}"></div>
-                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="">{{ album.artist }}</span><span _ngcontent-hnk-c7="">{{ album.name }}</span>
+                                                <div _ngcontent-hnk-c7="" class="albumArtDescription"><span _ngcontent-hnk-c7="" class="albumArtArtist">{{ album.artist }}</span><span _ngcontent-hnk-c7="">{{ album.name }}</span>
                                             </div>
                                         </div>
                                         </div>

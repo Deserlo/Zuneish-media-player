@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 import sqlite3
 from sqlite3 import Error
 import collections
+from Player import Player
 
 
 paused = False
@@ -21,6 +22,8 @@ music_dir = home / "music/"
 print ("music dir:", music_dir)
 #song_paths = music_dir.rglob("*.mp3")
 
+
+player = Player()
 
 
 def load():
@@ -54,8 +57,6 @@ def load():
         f.write(output)
     
 
-    
-
 
 load()
 eel.init('web')
@@ -64,33 +65,6 @@ eel.init('web')
 @eel.expose
 def reload():
     load()
-
-#for example
-@eel.expose
-def switch(curr_id):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor() 
-    print('switching layout..')
-    tracks = []
-    artists = set()
-    albums = set()
-    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 250;""")
-    c.execute(query)
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print(row)     
-        track = AudioTrack(id=row[4], name=row[0], album=row[2], artist=row[3], file_path=row[1].replace("\\", "\\\\"))
-        tracks.append(track)
-        album = Album(name=row[2], artist=row[3], img=row[2] + ".thumbnail")
-        albums.add(album)
-        artists.add(row[3])
-    c.close()
-    template = env.get_template('index2.html')
-    output = template.render(id=int(curr_id)-1,tracks=tracks, albums=albums, artists=artists)
-    data_folder = Path(__file__).parent
-    rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
-    with open(rendered_filename, "w", encoding='utf-8') as f:
-        f.write(output)
 
 
 @eel.expose
@@ -126,13 +100,15 @@ def get_artist_view(artistName):
 def get_song(id):
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor()
-    query = ("""SELECT track_name, album, path from tracks where id=?""")
+    query = ("""SELECT track_name, artist, album, path from tracks where id=?""")
     c.execute(query,(id,))
     queryResults = c.fetchall()
     for row in queryResults:
         song = row[0]
-        album = row[1]
-        path = row[2]
+        album = row[2]
+        path = row[3]
+    player.update(id, row[0], row[1])
+    player.display()
     c.close()
     return [song, album, path]
 
