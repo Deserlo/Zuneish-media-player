@@ -8,12 +8,12 @@ class Player(object):
     now_playing_album = ""
     now_playing_artist = ""
     
-    def update(self, id, path, track_name, album, artist):
-        self.now_playing_id = id
-        self.now_playing_path = path
-        self.now_playing_track_name = track_name
-        self.now_playing_album = album
-        self.now_playing_artist = artist
+    def update(self, song):
+        self.now_playing_id = song[0]
+        self.now_playing_path = song[1]
+        self.now_playing_track_name = song[2]
+        self.now_playing_album = song[3]
+        self.now_playing_artist = song[4]
         self.update_player()
 
     def display(self):

@@ -1,18 +1,36 @@
+import eel
+
 import sqlite3
 from sqlite3 import Error
+
 from pathlib import Path
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 from io import BytesIO
 from PIL import Image
 
+# File explorer, filedialog module 
+from tkinter import *
+from tkinter import filedialog 
+
 
 #Loading files
+'''
 conn = sqlite3.connect('MusicLibrary.db')
 data_folder = Path(__file__).parent
 home = Path.home()
 music_dir = home / "music/"
 song_paths = music_dir.rglob("*.mp3")
+'''
+
+@eel.expose
+def open_file_explorer():
+    root = Tk()
+    root.withdraw()
+    root.wm_attributes('-topmost', 1)
+    folder = filedialog.askdirectory()
+    return folder
+
 
 
 tracks = []
@@ -55,7 +73,7 @@ def loadTrack(path, track, album, artist):
     except Error as e:
         print(e)
 
-
+'''
 for i in song_paths:
     tags = ID3(i)
     try:
@@ -67,7 +85,7 @@ for i in song_paths:
         loadTrack(str(i),track, album, artist)
     except:
         pass
-
+'''
 
 
 

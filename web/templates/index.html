@@ -61,6 +61,10 @@
             await eel.reload()();
             window.location.reload(true);
         }
+        async function open_file(){
+            let folder = await eel.open_file_explorer()();
+            console.log(folder);
+        }
         </script>
     <style>
         a.nav-item.nav-link[_ngcontent-hnk-c1] {
@@ -406,7 +410,7 @@
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item0 active" routerlinkactive="active" onclick="home();" href="#/music/ARTISTS"> ARTISTS </a>
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item1" routerlinkactive="active"  href="#/music/GENRES"> GENRES </a>
                                 <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item2" routerlinkactive="active" href="#/music/ALBUMS"> ALBUMS </a>
-                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item3" routerlinkactive="active" onclick="remove();" href="#/music/SONGS"> SONGS </a>
+                                <a _ngcontent-hnk-c6="" class="nav-item nav-link slide-right item3" routerlinkactive="active" onclick="open_file();" href="#/music/SONGS"> SONGS </a>
                             </div>
                         </div>
                     </nav>

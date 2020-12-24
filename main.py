@@ -1,16 +1,28 @@
+# Allows offline web connectivity
 import eel
+
+# Music player library
+from pygame import mixer
+
+# Web template engine
+from jinja2 import Environment, FileSystemLoader
+
+# Custom classes
 from AudioTrack import AudioTrack
 from Album import Album
-from pathlib import Path
-from pygame import mixer
-from jinja2 import Environment, FileSystemLoader
+from Player import Player
+
+# Sqlite
 import sqlite3
 from sqlite3 import Error
+import sqllite
+
 import collections
-from Player import Player
+from pathlib import Path
 
 
 paused = False
+
 
 #Jinja templates
 file_loader = FileSystemLoader('web/templates')
@@ -19,6 +31,7 @@ env = Environment(loader=file_loader)
 #Player
 player = Player()
 player.display()
+
 
 
 def load():
@@ -52,7 +65,7 @@ def load():
 
 def render_template(playStatus, nowPlaying, tracks, albums, artists):
     template = env.get_template("index.html")
-    output = template.render(playStatus=playStatus, nowPlayer=nowPlaying,tracks=tracks, albums=albums, artists=artists)
+    output = template.render(playStatus=playStatus, nowPlayer=nowPlaying, tracks=tracks, albums=albums, artists=artists)
     data_folder = Path(__file__).parent
     rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
     with open(rendered_filename, "w", encoding='utf-8') as f:
@@ -100,7 +113,7 @@ def get_song(id, order):
 
 @eel.expose
 def update_player(song):
-    player.update(song[0], song[1], song[2], song[3], song[4])
+    player.update(song)
 
 
 #Music Player functionalities
@@ -159,5 +172,5 @@ render_template(playStatus, data[0], data[1], data[2], data[3])
 
 # Initializing local webserver
 eel.init('web')  
-eel.start('templates/main.html',port=0, size=(800, 600))
+eel.start('templates/main.html', port=0, size=(800, 600))
 
