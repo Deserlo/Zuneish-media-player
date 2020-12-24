@@ -9,13 +9,9 @@
     <script type='text/javascript' src='/eel.js'></script>
     <script type='text/javascript'>
         async function play(id) {
-            let song = await eel.get_song(id)();
-            document.getElementById('nowPlaying').innerHTML = song[0];
-            document.getElementById('nowPlaying').setAttribute('value', id);
-            document.getElementById('albumArt').src = 'icons/albums/' + song[1] + '.thumbnail';
-            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
-            document.getElementById('playStatus').innerHTML = '&#xE103;';
-            await eel.play_song(song[2]);
+            let song = await eel.get_song(id, "now")();
+            updateNowPlaying(song);
+            await eel.play_song(song[1], id)();
         }
         async function stop() {
           await eel.stop_song();
@@ -30,19 +26,26 @@
             document.getElementById('playStatus').innerHTML = '&#xE103;';
             await eel.unpause_song();
         }
+
         async function next(){
             let currId = document.getElementById('nowPlaying').getAttribute('value');
-            let next = await eel.get_next_song(currId)();
-            let nextPath = next[0];
-            let nextId = next[1];
-            play(nextId);
+            let nextSong = await eel.get_song(currId, "next")();
+            updateNowPlaying(nextSong);
+            await eel.play_song(nextSong[1], nextSong[0])();
         }
         async function previous(){
             let currId = document.getElementById('nowPlaying').getAttribute('value');
-            let prev = await eel.get_previous_song(currId)();
-            let prevPath = prev[0];
-            let prevId = prev[1];
-            play(prevId);
+            let prevSong = await eel.get_song(currId, "previous")();
+            updateNowPlaying(prevSong);
+            await eel.play_song(prevSong[1], prevSong[0])();
+        }
+        async function updateNowPlaying(song) {
+            await eel.update_player(song)();
+            document.getElementById('nowPlaying').textContent = song[2];
+            document.getElementById('nowPlaying').setAttribute('value', song[0]);
+            document.getElementById('albumArt').src = 'icons/albums/' + song[3] + '.thumbnail';
+            document.getElementById('playStatus').setAttribute( "onClick", "pause()" );
+            document.getElementById('playStatus').innerHTML = '&#xE103;';
         }
         async function remove(){
             let currId = document.getElementById('nowPlaying').getAttribute('value');
@@ -57,22 +60,6 @@
         async function home(){
             await eel.reload()();
             window.location.reload(true);
-        }
-        async function getArtistView(artistName){
-            let albumDivs = document.querySelectorAll('.albumArtDiv');
-            albumDivs.forEach( div => {
-                artist = div.querySelector('.albumArtArtist').innerHTML;
-                if (artistName != artist){
-                   console.log(artist);
-                   artist.remove(); 
-                } 
-            });
-            /*
-            while (albumDiv.firstChild){
-                albumDiv.removeChild(albumDiv.firstChild);
-            }
-            await eel.get_artist_view(artistName)();
-            window.location.reload(true);*/
         }
         </script>
     <style>
@@ -476,10 +463,10 @@
                         <div _ngcontent-hnk-c3="" class="container mediaControls flexCenter">
                             <div _ngcontent-hnk-c3="" class="row">
                                 <div _ngcontent-hnk-c3="" class="col-2">
-                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/blankImage.png" /></a>
+                                    <a _ngcontent-hnk-c3="" href="#/nowPlaying"><img _ngcontent-hnk-c3="" id="albumArt" style="padding: 2px; height: 2.5rem; width: 2.5rem;" src="icons/albums/{{ nowPlayer[3] }}.thumbnail" /></a>
                                 </div>
                                 <div _ngcontent-hnk-c3="" class="col-10">
-                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" style="font-size: 0.8rem;">No Song selected</div>
+                                    <div _ngcontent-hnk-c3="" id="nowPlaying" class="row" value="{{ nowPlayer[0] }}" style="font-size: 0.8rem;">{{ nowPlayer[2] }}</div>
                                     <div _ngcontent-hnk-c3="" class="row"><input _ngcontent-hnk-c3="" id="seek" type="range" value="0" max="NaN" class="ng-untouched ng-pristine ng-valid" /></div>
                                     <div _ngcontent-hnk-c3="" class="row" style="font-size: 0.8rem;">0:0</div>
                                 </div>
@@ -495,7 +482,7 @@
                             <div _ngcontent-hnk-c3="" class="col-6">
                                 <div _ngcontent-hnk-c3="" class="row flexRight">
                                     <a _ngcontent-hnk-c3="" class="rew" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="previous();return false;" >&#xE100;</a>
-                                    <a _ngcontent-hnk-c3="" id="playStatus" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="play();return false;">&#xE102;</a>
+                                    <a _ngcontent-hnk-c3="" id="playStatus" class="play" style=" margin:2px; font-size: 2rem;border: 1px solid black; border-radius: 50%;width: 50px;height: 50px;text-align: center;" onclick="{{ playStatus[0] }}('{{nowPlayer[0]}}');">{{ playStatus[1] }}</a>
                                     <!--<a _ngcontent-hnk-c3="" class="pause" style=" visibility: hidden; margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="pause(); return false;">&#xE103;</a>-->
                                     <a _ngcontent-hnk-c3="" class="ff" style="margin: 2px;font-size: 1.4rem;border: 1px solid black;border-radius: 50%;width: 36px;height: 36px;text-align: center;" onclick="next();return false;">&#xE101;</a>
                                 </div>

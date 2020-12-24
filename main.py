@@ -12,18 +12,13 @@ from Player import Player
 
 paused = False
 
-#Jinja
+#Jinja templates
 file_loader = FileSystemLoader('web/templates')
 env = Environment(loader=file_loader)
 
-
-home = Path.home()
-music_dir = home / "music/"
-print ("music dir:", music_dir)
-#song_paths = music_dir.rglob("*.mp3")
-
-
+#Player
 player = Player()
+player.display()
 
 
 def load():
@@ -32,11 +27,11 @@ def load():
     albums = set()
     conn = sqlite3.connect('MusicLibrary.db')
     c = conn.cursor() 
-    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 250;""")
+    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 350;""")
     c.execute(query)
     queryResults = c.fetchall()
     for row in queryResults:
-        print(row)     
+        #print(row)     
         file_path = row[1].replace("\\", "\\\\")
         name = row[0]
         album = row[2]
@@ -49,105 +44,68 @@ def load():
         albums.add(album)
         artists.add(artist)
     c.close()
-    template = env.get_template('index.html')
-    output = template.render(tracks=tracks, albums=albums, artists=artists)
-    data_folder = Path(__file__).parent
-    rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
-    with open(rendered_filename, "w", encoding='utf-8') as f:
-        f.write(output)
+    nowPlaying = player.get_last_session()
+    return [nowPlaying, tracks, albums, artists]
     
 
+    
 
-load()
-eel.init('web')
-
-
-@eel.expose
-def reload():
-    load()
-
-
-@eel.expose
-def get_artist_view(artistName):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor() 
-    print('getting artist data')
-    tracks = []
-    artists = set()
-    albums = set()
-    query = ("""SELECT track_name, path, album, artist, id FROM tracks where artist=? order by id asc""")
-    c.execute(query, (artistName,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print(row)     
-        track = AudioTrack(id=row[4], name=row[0], album=row[2], artist=row[3], file_path=row[1].replace("\\", "\\\\"))
-        tracks.append(track)
-        album = Album(name=row[2], artist=row[3], img=row[2] + ".thumbnail")
-        albums.add(album)
-        artists.add(row[3])
-    c.close()
-    template = env.get_template('index.html')
-    output = template.render(tracks=tracks, albums=albums, artists=artists)
+def render_template(playStatus, nowPlaying, tracks, albums, artists):
+    template = env.get_template("index.html")
+    output = template.render(playStatus=playStatus, nowPlayer=nowPlaying,tracks=tracks, albums=albums, artists=artists)
     data_folder = Path(__file__).parent
     rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
     with open(rendered_filename, "w", encoding='utf-8') as f:
         f.write(output)
+
+
+
+
+'''
+Eel functions
+'''
+@eel.expose
+def reload():
+    data = load()
+    if paused == True:
+        playStatus = [ "unpause", "&#xE102;" ]
+        print("paused")
+    else:
+        playStatus = [ "pause", "&#xE103;" ]
+        print("playing")
+    render_template(playStatus, data[0], data[1], data[2], data[3])
+
 
 
 
 #Metadata retrieval from music library
 @eel.expose
-def get_song(id):
+def get_song(id, order):
     conn = sqlite3.connect('MusicLibrary.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    query = ("""SELECT track_name, artist, album, path from tracks where id=?""")
+    if order == "now":
+        query = ("""SELECT * FROM tracks WHERE id=?""")
+    elif order == "next":
+        query = ("""SELECT * FROM tracks WHERE id = (SELECT min(id) FROM tracks WHERE id > ?)""")
+    elif order == "previous":
+        query = ("""SELECT * FROM tracks WHERE id = (SELECT max(id) FROM tracks WHERE id < ?)""") 
     c.execute(query,(id,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        song = row[0]
-        album = row[2]
-        path = row[3]
-    player.update(id, row[0], row[1])
-    player.display()
+    queryResult = c.fetchone()
+    print(queryResult)
+    id, path, track_name, album, artist = queryResult['id'], queryResult['path'], queryResult['track_name'], queryResult['album'], queryResult['artist']
     c.close()
-    return [song, album, path]
-
+    return [id, path, track_name, album, artist]
 
 
 @eel.expose
-def get_next_song(id):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor()
-    query = ("""select path, id from tracks where id = (select min(id) from tracks where id > ?)""")
-    c.execute(query, (id,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print(row)
-        next_track = row[0]
-        next_id = row[1]
-    c.close()
-    return [next_track, next_id]
-
-
-@eel.expose
-def get_previous_song(id):
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor()
-    query =("""select path, id from tracks where id = (select max(id) from tracks where id < ?)""")
-    c.execute(query, (id,))
-    queryResults = c.fetchall()
-    for row in queryResults:
-        print(row)
-        previous_track = row[0]
-        previous_id = row[1]
-    c.close()
-    return [previous_track, previous_id]
-
+def update_player(song):
+    player.update(song[0], song[1], song[2], song[3], song[4])
 
 
 #Music Player functionalities
 @eel.expose
-def play_song(song):
+def play_song(song, id):
     # Starting the mixer 
     mixer.init() 
     
@@ -161,11 +119,17 @@ def play_song(song):
     # Start playing the song 
     mixer.music.play() 
 
+    # Queue next song
+    nextSong = get_song(id, "next")
+    mixer.music.queue(nextSong[1])
+
+
 
 @eel.expose
 def stop_song():
     mixer.music.stop()
     mixer.music.unload()
+
 
 
 @eel.expose
@@ -174,7 +138,9 @@ def pause_song():
     paused = True
     print("pausing song..")
     mixer.music.pause()
-    
+
+
+  
 @eel.expose
 def unpause_song():
     global paused
@@ -183,6 +149,15 @@ def unpause_song():
     mixer.music.unpause()
 
 
-    
+
+# Data load
+data = load()
+
+playStatus = ["play", "&#xE102;"]
+# Output to template
+render_template(playStatus, data[0], data[1], data[2], data[3])
+
+# Initializing local webserver
+eel.init('web')  
 eel.start('templates/main.html',port=0, size=(800, 600))
 

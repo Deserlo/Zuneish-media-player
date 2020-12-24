@@ -14,6 +14,7 @@ home = Path.home()
 music_dir = home / "music/"
 song_paths = music_dir.rglob("*.mp3")
 
+
 tracks = []
 artists = set()
 albums = set()
