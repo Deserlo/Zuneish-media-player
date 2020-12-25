@@ -8,14 +8,10 @@ from pygame import mixer
 from jinja2 import Environment, FileSystemLoader
 
 # Custom classes
-from AudioTrack import AudioTrack
-from Album import Album
 from Player import Player
 
-# Sqlite
-import sqlite3
-from sqlite3 import Error
-import sqllite
+# DB 
+from sqlCommands import *
 
 import collections
 from pathlib import Path
@@ -33,30 +29,9 @@ player = Player()
 player.display()
 
 
-
+# Loads from local db
 def load():
-    tracks = []
-    artists = set()
-    albums = set()
-    conn = sqlite3.connect('MusicLibrary.db')
-    c = conn.cursor() 
-    query = ("""SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 350;""")
-    c.execute(query)
-    queryResults = c.fetchall()
-    for row in queryResults:
-        #print(row)     
-        file_path = row[1].replace("\\", "\\\\")
-        name = row[0]
-        album = row[2]
-        artist = row[3]
-        id = row[4]
-        track = AudioTrack(id=id, name=name, album=album, artist=artist, file_path=file_path)
-        tracks.append(track)
-        ustr = ".thumbnail"
-        album = Album(name=album, artist=artist, img=album + ustr)
-        albums.add(album)
-        artists.add(artist)
-    c.close()
+    tracks, artists, albums = db_load_all_songs()
     nowPlaying = player.get_last_session()
     return [nowPlaying, tracks, albums, artists]
     
@@ -79,14 +54,14 @@ Eel functions
 '''
 @eel.expose
 def reload():
-    data = load()
+    nowPlaying, tracks, albums, artists = load()
     if paused == True:
         playStatus = [ "unpause", "&#xE102;" ]
         print("paused")
     else:
         playStatus = [ "pause", "&#xE103;" ]
         print("playing")
-    render_template(playStatus, data[0], data[1], data[2], data[3])
+    render_template(playStatus, nowPlaying, tracks, albums, artists)
 
 
 
@@ -94,21 +69,8 @@ def reload():
 #Metadata retrieval from music library
 @eel.expose
 def get_song(id, order):
-    conn = sqlite3.connect('MusicLibrary.db')
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-    if order == "now":
-        query = ("""SELECT * FROM tracks WHERE id=?""")
-    elif order == "next":
-        query = ("""SELECT * FROM tracks WHERE id = (SELECT min(id) FROM tracks WHERE id > ?)""")
-    elif order == "previous":
-        query = ("""SELECT * FROM tracks WHERE id = (SELECT max(id) FROM tracks WHERE id < ?)""") 
-    c.execute(query,(id,))
-    queryResult = c.fetchone()
-    print(queryResult)
-    id, path, track_name, album, artist = queryResult['id'], queryResult['path'], queryResult['track_name'], queryResult['album'], queryResult['artist']
-    c.close()
-    return [id, path, track_name, album, artist]
+    song = db_song_query(order, id)
+    return song
 
 
 @eel.expose
