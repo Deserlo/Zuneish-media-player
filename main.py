@@ -1,14 +1,11 @@
 # Allows offline web connectivity
 import eel
 
-# Music player library
-from pygame import mixer
-
 # Web template engine
 from jinja2 import Environment, FileSystemLoader
 
 # Custom classes
-from Player import Player
+from Player import *
 
 # DB 
 from sqlCommands import *
@@ -17,8 +14,6 @@ import collections
 from pathlib import Path
 
 
-paused = False
-
 
 #Jinja templates
 file_loader = FileSystemLoader('web/templates')
@@ -26,18 +21,18 @@ env = Environment(loader=file_loader)
 
 #Player
 player = Player()
-player.display()
 
 
 # Loads from local db
 def load():
     tracks, artists, albums = db_load_all_songs()
     nowPlaying = player.get_last_session()
+    player.update(nowPlaying)
+    player.display()
     return [nowPlaying, tracks, albums, artists]
     
 
     
-
 def render_template(playStatus, nowPlaying, tracks, albums, artists):
     template = env.get_template("index.html")
     output = template.render(playStatus=playStatus, nowPlayer=nowPlaying, tracks=tracks, albums=albums, artists=artists)
@@ -55,7 +50,7 @@ Eel functions
 @eel.expose
 def reload():
     nowPlaying, tracks, albums, artists = load()
-    if paused == True:
+    if player.get_paused_status() == True:
         playStatus = [ "unpause", "&#xE102;" ]
         print("paused")
     else:
@@ -65,7 +60,7 @@ def reload():
 
 
 
-
+#Music Player functionalities
 #Metadata retrieval from music library
 @eel.expose
 def get_song(id, order):
@@ -78,26 +73,13 @@ def update_player(song):
     player.update(song)
 
 
-#Music Player functionalities
 @eel.expose
 def play_song(song, id):
-    # Starting the mixer 
-    mixer.init() 
-    
-    # Loading the song 
-    print("Loading..", song)
-    mixer.music.load(song)
-    
-    # Setting the volume 
-    mixer.music.set_volume(0.7) 
-    
-    # Start playing the song 
-    mixer.music.play() 
+    player.play(song)
 
     # Queue next song
-    nextSong = get_song(id, "next")
-    mixer.music.queue(nextSong[1])
-
+    nextSong = get_song(id, order="next")
+    player.queue(nextSong[1])
 
 
 @eel.expose
@@ -106,22 +88,14 @@ def stop_song():
     mixer.music.unload()
 
 
-
 @eel.expose
 def pause_song():
-    global paused
-    paused = True
-    print("pausing song..")
-    mixer.music.pause()
+    player.pause()
 
 
-  
 @eel.expose
 def unpause_song():
-    global paused
-    paused = False
-    print("resuming song..")
-    mixer.music.unpause()
+    player.unpause()
 
 
 
