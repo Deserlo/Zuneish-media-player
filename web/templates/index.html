@@ -57,6 +57,18 @@
             }
             */
         }
+        async function getArtistView(name){
+            console.log(name);
+            var myDiv = document.getElementById('albumList');
+            const selectedArtist = myDiv.querySelectorAll(".albumArtDiv");
+
+            selectedArtist.forEach(function(item) {
+                if (item.getAttribute('value') != name){
+                    console.log(item.getAttribute('class'));
+                    item.remove();
+                }
+            });
+        }
         async function home(){
             await eel.reload()();
             window.location.reload(true);
@@ -433,7 +445,7 @@
                                 <ul _ngcontent-hnk-c7="" id ="albumList" class="bordered-col slide-right">
                                     <div _ngcontent-hnk-c7="" class="row albumArtRow">
                                         {% for album in albums %}
-                                        <div _ngcontent-hnk-c7="" class="albumArtDiv">
+                                        <div _ngcontent-hnk-c7="" class="albumArtDiv" value='{{ album.artist }}'>
                                             <div _ngcontent-hnk-c7="" class="content">
                                                 <div _ngcontent-hnk-c7="" class="albumArtImage">
                                                     <img _ngcontent-hnk-c7="" class="rs" src="icons/albums/{{ album.img }}"></div>

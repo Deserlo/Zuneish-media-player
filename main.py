@@ -5,14 +5,13 @@ import eel
 from jinja2 import Environment, FileSystemLoader
 
 # Custom classes
-from Player import *
+from classes.Player import *
 
 # DB 
-from sqlCommands import *
+from sqllite.sqlCommands import *
 
 import collections
 from pathlib import Path
-
 
 
 #Jinja templates
@@ -40,7 +39,6 @@ def render_template(playStatus, nowPlaying, tracks, albums, artists):
     rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
     with open(rendered_filename, "w", encoding='utf-8') as f:
         f.write(output)
-
 
 
 

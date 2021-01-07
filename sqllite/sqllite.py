@@ -73,6 +73,10 @@ def loadTrack(path, track, album, artist):
     except Error as e:
         print(e)
 
+
+
+
+
 '''
 for i in song_paths:
     tags = ID3(i)

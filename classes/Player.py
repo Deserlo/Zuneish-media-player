@@ -2,7 +2,7 @@ import eel
 
 import sqlite3
 from sqlite3 import Error
-from sqlCommands import *
+from sqllite.sqlCommands import *
 
 # Music player library
 from pygame import mixer
@@ -61,6 +61,7 @@ class Player(object):
         self.now_playing_album = song[3]
         self.now_playing_artist = song[4]
         self.update_player()
+
 
     def display(self):
         print(self.now_playing_id)
