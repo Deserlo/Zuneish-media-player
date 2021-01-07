@@ -15,27 +15,56 @@ from tkinter import filedialog
 
 
 #Loading files
+
+conn = sqlite3.connect('music/sqllitedb/MusicLibrary.db')
+
 '''
-conn = sqlite3.connect('MusicLibrary.db')
 data_folder = Path(__file__).parent
 home = Path.home()
 music_dir = home / "music/"
 song_paths = music_dir.rglob("*.mp3")
 '''
 
-@eel.expose
+
 def open_file_explorer():
     root = Tk()
     root.withdraw()
     root.wm_attributes('-topmost', 1)
-    folder = filedialog.askdirectory()
-    return folder
+    folder = filedialog.askdirectory(title = 'Select directory with mp3 files to import')
+    print("opening file explorer ", folder)
+    if folder == None or folder == '':
+        print("no folder selected, exiting..")
+        return None
+    else:
+        return folder
 
 
 
 tracks = []
 artists = set()
 albums = set()
+
+@eel.expose
+def load_files_from_directory():
+    folder = open_file_explorer()
+    if folder is not None:
+        print(folder)
+        path = Path(folder)
+        paths = path.rglob("*.mp3")
+        for i in paths:
+            tags = ID3(i)
+            try:
+                track = tags['TIT2'].text[0]
+                artist = tags['TPE1'].text[0]
+                album = tags['TALB'].text[0]
+                #album_art_path = getAlbumArtPath(tags)
+                #saveAlbumThumb(tags, album_art_path, "JPEG")
+                loadTrack(str(i),track, album, artist)
+                print(track)
+            except:
+                print("error")
+                pass
+
 
 #Mp3 Metadata 
 def getMutagenTags(path):
