@@ -21,6 +21,6 @@ with Eel, Python, React, and SQL Lite db.
  - [ ] Add pre-made music visualizers
 
 ### Screen Capture
-![UI](https://raw.githubusercontent.com/Deserlo/Zuneish-media-player/master/screenshot-12-15-20.png)
+![UI](https://github.com/Deserlo/Zuneish-media-player/blob/master/screenshot-12-15-20.png)
 
 
