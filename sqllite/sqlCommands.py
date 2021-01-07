@@ -9,8 +9,12 @@ from classes.Album import Album
 
 
 def get_sql_connection():
-    conn = sqlite3.connect('music/sqllitedb/MusicLibrary.db')
-    return conn
+    try:
+        conn = sqlite3.connect('music/sqllitedb/MusicLibrary.db')
+        return conn
+    except Error as e:
+        print(e)  
+    
 
 
 def get_sql_query(name):
@@ -18,7 +22,7 @@ def get_sql_query(name):
         "now": """SELECT * FROM tracks WHERE id=?""",
         "next": """SELECT * FROM tracks WHERE id = (SELECT min(id) FROM tracks WHERE id > ?)""",
         "previous": """SELECT * FROM tracks WHERE id = (SELECT max(id) FROM tracks WHERE id < ?)""",
-        "all": """SELECT track_name, path, album, artist, id FROM tracks order by id asc limit 550;""",
+        "all": """SELECT track_name, path, album, artist, id FROM tracks order by id desc;""",
         "update_player": """UPDATE player SET id=?, path=?, track_name=?, album=?, artist=?""",
         "player_status": """SELECT * FROM player"""
     }
