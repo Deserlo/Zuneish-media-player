@@ -2,7 +2,7 @@
 
 Nostalgic for the Microsoft Zune player, I'm creating my own desktop media player as an offline web app using this awesome 
 front-end https://javapyscript.github.io/zunePlayer/#/music/ARTISTS as inspiration along 
-with Eel, Python, React, and SQL Lite db.
+with Eel, Python, and SQL Lite db.
 
  - [ ] Basic player functionality
 	 - [x] play, pause, resume
