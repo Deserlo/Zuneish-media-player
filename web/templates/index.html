@@ -77,6 +77,12 @@
             let folder = await eel.load_files_from_directory()();
             console.log(folder);
         }
+
+        async function wiki_search(){
+            await eel.get_pop_up_results()();
+            
+        }
+        window.setInterval(wiki_search, 10000);
         </script>
     <style>
         a.nav-item.nav-link[_ngcontent-hnk-c1] {

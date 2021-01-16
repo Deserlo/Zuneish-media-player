@@ -7,18 +7,22 @@ from jinja2 import Environment, FileSystemLoader
 # Custom classes
 from classes.Player import *
 
-# DB 
+# DB
 from sqllite.sqlCommands import *
+from sqllite.sqllite import *
 
 import collections
 from pathlib import Path
 
+from wikipedia import wikisearch
+import asyncio
 
-#Jinja templates
+
+# Jinja templates
 file_loader = FileSystemLoader('web/templates')
 env = Environment(loader=file_loader)
 
-#Player
+# Player
 player = Player()
 
 
@@ -29,37 +33,43 @@ def load():
     player.update(nowPlaying)
     player.display()
     return [nowPlaying, tracks, albums, artists]
-    
 
-    
+
 def render_template(playStatus, nowPlaying, tracks, albums, artists):
     template = env.get_template("index.html")
-    output = template.render(playStatus=playStatus, nowPlayer=nowPlaying, tracks=tracks, albums=albums, artists=artists)
+    output = template.render(playStatus=playStatus, nowPlayer=nowPlaying,
+                             tracks=tracks, albums=albums, artists=artists)
     data_folder = Path(__file__).parent
     rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
     with open(rendered_filename, "w", encoding='utf-8') as f:
         f.write(output)
 
 
-
 '''
 Eel functions
 '''
+
+
 @eel.expose
 def reload():
     nowPlaying, tracks, albums, artists = load()
     if player.get_paused_status() == True:
-        playStatus = [ "unpause", "&#xE102;" ]
+        playStatus = ["unpause", "&#xE102;"]
         print("paused")
     else:
-        playStatus = [ "pause", "&#xE103;" ]
+        playStatus = ["pause", "&#xE103;"]
         print("playing")
     render_template(playStatus, nowPlaying, tracks, albums, artists)
 
 
+@eel.expose
+def get_pop_up_results():
+    wikisearch.wiki_page_search()
 
-#Music Player functionalities
-#Metadata retrieval from music library
+# Music Player functionalities
+# Metadata retrieval from music library
+
+
 @eel.expose
 def get_song(id, order):
     song = db_song_query(order, id)
@@ -96,7 +106,6 @@ def unpause_song():
     player.unpause()
 
 
-
 # Data load
 data = load()
 
@@ -105,6 +114,5 @@ playStatus = ["play", "&#xE102;"]
 render_template(playStatus, data[0], data[1], data[2], data[3])
 
 # Initializing local webserver
-eel.init('web')  
+eel.init('web')
 eel.start('templates/main.html', port=0, size=(800, 600))
-
