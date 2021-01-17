@@ -25,6 +25,9 @@ env = Environment(loader=file_loader)
 # Player
 player = Player()
 
+# Wiki 'popups' list
+wiki_list = wikisearch.wiki_page_search()
+
 
 # Loads from local db
 def load():
@@ -64,7 +67,9 @@ def reload():
 
 @eel.expose
 def get_pop_up_results():
-    wikisearch.wiki_page_search()
+    print(wiki_list[0])
+    print(wiki_list[1])
+
 
 # Music Player functionalities
 # Metadata retrieval from music library

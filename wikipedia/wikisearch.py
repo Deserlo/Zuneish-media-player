@@ -4,13 +4,15 @@ import asyncio
 titles = ["1979 in music", "1979 in film", "1979 in united states"]
 
 
-def print_sections(sections, level=0):
+def print_sections(sections, results, level=0):
     for s in sections:
         print("%s: %s - %s" % ("*" * (level + 1), s.title, s.text))
-        print_sections(s.sections, level + 1)
+        results.append(s.text)
+        print_sections(s.sections, results, level + 1)
 
 
 def wiki_page_search():
+    results = []
     for title in titles:
         print(title)
         wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -22,7 +24,8 @@ def wiki_page_search():
             # Page - Title: Python (programming language)
             print("Page - Summary: %s" % page_py.summary)
             # Page - Summary: Python is a widely used high-level programming language for
-            print_sections(page_py.sections)
+            print_sections(page_py.sections, results)
+    return results
 
 
 '''
