@@ -25,4 +25,4 @@ events occuring the same year.</p>
 
 ### Screen Capture
 
-![UI](https://github.com/Deserlo/Zuneish-media-player/blob/master/screenshot-12-15-20.png)
+![UI](https://github.com/Deserlo/Zuneish-media-player/blob/master/screenshot-1-17-21.PNG)
