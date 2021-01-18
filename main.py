@@ -27,6 +27,7 @@ player = Player()
 
 # Wiki 'popups' list
 wiki_list = wikisearch.wiki_page_search()
+count = 0
 
 
 # Loads from local db
@@ -41,7 +42,7 @@ def load():
 def render_template(playStatus, nowPlaying, tracks, albums, artists):
     template = env.get_template("index.html")
     output = template.render(playStatus=playStatus, nowPlayer=nowPlaying,
-                             tracks=tracks, albums=albums, artists=artists)
+                             tracks=tracks, albums=albums, artists=artists, wiki_results=wiki_list)
     data_folder = Path(__file__).parent
     rendered_filename = data_folder / 'web' / 'templates' / 'main.html'
     with open(rendered_filename, "w", encoding='utf-8') as f:
@@ -67,8 +68,13 @@ def reload():
 
 @eel.expose
 def get_pop_up_results():
-    print(wiki_list[0])
-    print(wiki_list[1])
+    global count
+    if count == len(wiki_list)-1:
+        count = 0
+    else:
+        print(wiki_list[count])
+        count += 1
+    return wiki_list[count]
 
 
 # Music Player functionalities

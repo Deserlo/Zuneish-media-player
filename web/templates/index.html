@@ -79,8 +79,9 @@
         }
 
         async function wiki_search(){
-            await eel.get_pop_up_results()();
-            
+            let info = await eel.get_pop_up_results()();
+            console.log(info);
+            document.getElementById('nuggets').innerHTML = info;
         }
         window.setInterval(wiki_search, 10000);
         </script>
@@ -516,7 +517,9 @@
             </div>
         </app-footerplayer>
         <app-nowplaying _ngcontent-hnk-c0="" _nghost-hnk-c4="">
-            <div _ngcontent-hnk-c4="" class="container"><div _ngcontent-hnk-c4="" class="row"></div></div>
+            <div _ngcontent-hnk-c4="" class="container">
+                <div _ngcontent-hnk-c4="" class="row" id="nuggets">{{wiki_results[0]}}</div>
+            </div>
         </app-nowplaying>
     </app-root>
     <script type="text/javascript" src="runtime.26209474bfa8dc87a77c.js"></script>
